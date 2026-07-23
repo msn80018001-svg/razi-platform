@@ -4,33 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>فرسان العلوم — الصف الرابع</title>
-<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --navy:#0F2A43; --navy-deep:#0A1E31; --teal:#0E7C6B; --teal-light:#E6F4F1;
-    --gold:#C9A227; --gold-light:#F5E9C8; --sand:#FAF7F0; --ink:#1C2B36;
-    --silver:#8C9BAA; --bronze:#A9714B; --red:#B4423A;
+    --gold:#C9A227; --gold-light:#F5E9C8; --sand:#FAF7F0; --ink:#14212C;
+    --silver:#6E8090; --bronze:#A9714B; --red:#B4423A;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  body{background:var(--sand); font-family:'Tajawal',sans-serif; color:var(--ink); min-height:100vh;}
+  body{background:var(--sand); font-family:'Tajawal',sans-serif; color:var(--ink); min-height:100vh; font-size:16px;}
   button{font-family:'Tajawal',sans-serif; cursor:pointer; border:none;}
-  input,select{font-family:'Tajawal',sans-serif; font-size:15px;}
+  input,select{font-family:'Tajawal',sans-serif; font-size:16px; font-weight:700; color:var(--ink);}
   input:focus,select:focus,button:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
 
   header{background:linear-gradient(135deg,var(--navy-deep),var(--navy) 60%,#143A5C); color:#fff;
-    padding:22px 16px 18px; text-align:center; border-bottom:5px solid var(--gold);}
+    padding:24px 16px 18px; text-align:center; border-bottom:5px solid var(--gold);}
   .head-inner{display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;}
-  h1{font-family:'Aref Ruqaa',serif; font-size:clamp(30px,6vw,44px); color:var(--gold-light); letter-spacing:1px;}
-  .subtitle{font-size:14px; color:#B9CBDC; font-weight:500;}
+  h1{font-weight:900; font-size:clamp(32px,7vw,46px); color:#F7E9BE; letter-spacing:.5px;
+     text-shadow:0 2px 0 rgba(0,0,0,.35);}
+  .subtitle{font-size:15.5px; color:#D4E2EE; font-weight:700; margin-top:2px;}
   .head-btns{display:flex; justify-content:center; gap:8px; margin-top:14px; flex-wrap:wrap;}
-  .hbtn{background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.35);
-    border-radius:10px; padding:8px 16px; font-size:13.5px; font-weight:700;}
+  .hbtn{background:rgba(255,255,255,.14); color:#fff; border:1.5px solid rgba(255,255,255,.45);
+    border-radius:12px; padding:10px 20px; font-size:15px; font-weight:800;}
   .hbtn.on{background:var(--teal); border-color:var(--teal);}
-  #netState{font-size:11.5px; color:#8FB3A9; margin-top:8px; min-height:15px;}
+  #netState{font-size:13px; font-weight:700; color:#9FC5B8; margin-top:10px; min-height:16px;}
 
   main{max-width:980px; margin:0 auto; padding:22px 14px 60px;}
   .card{background:#fff; border-radius:16px; border:1px solid #E3DED2; box-shadow:0 4px 18px rgba(15,42,67,.07); padding:18px; margin-bottom:26px;}
-  h2{font-size:20px; color:var(--navy); margin-bottom:14px;}
+  h2{font-size:22px; font-weight:900; color:var(--navy); margin-bottom:14px;}
   .h2-line{border-bottom:3px solid var(--gold-light); padding-bottom:8px;}
 
   .avatar{border-radius:50%; border:3px solid var(--teal); background:var(--teal-light); overflow:hidden;
@@ -38,68 +39,92 @@
   .avatar img{width:100%; height:100%; object-fit:cover;}
 
   .podium{display:flex; justify-content:center; align-items:flex-end; gap:10px; margin-bottom:26px;}
-  .pod{text-align:center; width:clamp(92px,28vw,150px); display:flex; flex-direction:column; align-items:center;}
-  .pod-name{font-weight:800; font-size:13px; color:var(--navy); line-height:1.3; min-height:34px;}
+  .pod{text-align:center; width:clamp(94px,28vw,150px); display:flex; flex-direction:column; align-items:center;}
+  .pod-name{font-weight:900; font-size:14.5px; color:var(--navy); line-height:1.35; min-height:38px;}
   .pod-bar{width:100%; border-radius:12px 12px 0 0; color:#fff; display:flex; flex-direction:column;
     align-items:center; justify-content:center; margin-top:6px;}
-  .pod-bar .pts{font-size:26px; font-weight:800;}
-  .pod-bar .lbl{font-size:11px; opacity:.85;}
+  .pod-bar .pts{font-size:27px; font-weight:900;}
+  .pod-bar .lbl{font-size:12px; font-weight:700; opacity:.9;}
 
   .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}
-  .toolbar input{flex:1 1 180px; padding:9px 12px; border-radius:10px; border:1.5px solid #D8D2C4; font-size:14px;}
-  .chip{padding:8px 13px; border-radius:999px; font-size:13px; font-weight:700; background:var(--teal-light); color:var(--teal);}
+  .toolbar input{flex:1 1 180px; padding:10px 12px; border-radius:10px; border:1.5px solid #CBC4B2;}
+  .chip{padding:9px 15px; border-radius:999px; font-size:14.5px; font-weight:800; background:var(--teal-light); color:#0A5D50;}
   .chip.on{background:var(--navy); color:#fff;}
-  .row{display:flex; align-items:center; gap:12px; border-radius:12px; padding:9px 12px; margin-bottom:8px;}
-  .row .place{width:30px; text-align:center; font-weight:800; font-size:15px; color:var(--silver);}
+  .row{display:flex; align-items:center; gap:12px; border-radius:12px; padding:10px 12px; margin-bottom:8px;}
+  .row .place{width:30px; text-align:center; font-weight:900; font-size:16px; color:var(--silver);}
   .row .info{flex:1; min-width:0;}
-  .row .nm{font-weight:800; font-size:15.5px;}
-  .row .rk{font-size:12.5px; font-weight:700;}
+  .row .nm{font-weight:900; font-size:17px;}
+  .row .rk{font-size:14px; font-weight:800; margin-top:1px;}
+  .row .badges{font-size:13.5px; font-weight:800; color:#4A5D6B; margin-top:3px; display:flex; gap:8px; flex-wrap:wrap;}
+  .row .badges span{background:rgba(255,255,255,.75); border:1px solid rgba(0,0,0,.06); border-radius:8px; padding:1px 7px;}
   .row .pts{text-align:center;}
-  .row .pts .n{font-weight:800; font-size:19px; color:var(--navy);}
-  .row .pts .u{font-size:10.5px; color:var(--silver);}
+  .row .pts .n{font-weight:900; font-size:21px; color:var(--navy);}
+  .row .pts .u{font-size:11.5px; font-weight:700; color:var(--silver);}
   .legend{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:18px; padding-top:14px; border-top:1px dashed #D8D2C4;}
-  .legend span{font-size:12.5px; font-weight:700; border-radius:999px; padding:5px 12px;}
-  .empty{text-align:center; color:var(--silver); padding:30px; font-size:15px;}
+  .legend span{font-size:13.5px; font-weight:800; border-radius:999px; padding:6px 13px;}
+  .empty{text-align:center; color:var(--silver); padding:30px; font-size:16px; font-weight:700;}
 
-  .addbar{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
-  .addbar input{flex:1 1 220px; padding:10px 12px; border-radius:10px; border:1.5px solid #D8D2C4;}
-  .addbar select{padding:10px 12px; border-radius:10px; border:1.5px solid #D8D2C4;}
-  .btn{border-radius:10px; padding:10px 20px; font-size:15px; font-weight:700; color:#fff;}
+  .addbar{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+  .addbar input{flex:1 1 200px; padding:11px 12px; border-radius:10px; border:1.5px solid #CBC4B2;}
+  .addbar select{padding:11px 12px; border-radius:10px; border:1.5px solid #CBC4B2; background:#fff;}
+  .btn{border-radius:10px; padding:11px 20px; font-size:15.5px; font-weight:800; color:#fff;}
   .btn-teal{background:var(--teal);}
   .btn-navy{background:var(--navy);}
-  .mrow{display:flex; align-items:center; gap:10px; background:var(--sand); border-radius:12px; padding:8px 10px; flex-wrap:wrap; margin-bottom:8px;}
-  .photo-wrap{position:relative;}
-  .cam{position:absolute; bottom:-4px; left:-4px; width:24px; height:24px; border-radius:50%;
-    background:var(--gold); border:2px solid #fff; font-size:12px; display:flex; align-items:center; justify-content:center; padding:0;}
-  .delph{position:absolute; top:-6px; left:-6px; width:22px; height:22px; border-radius:50%;
-    background:#FDECEC; border:2px solid #fff; color:var(--red); font-size:10px; font-weight:900;
-    display:flex; align-items:center; justify-content:center; padding:0;}
-  .ptbtn{width:34px; height:34px; border-radius:9px; font-weight:800; font-size:14px;}
-  .minus{border:1.5px solid #D8D2C4; background:#fff; color:var(--red);}
-  .plus{background:var(--teal); color:#fff;}
-  .plus10{background:var(--navy); color:#fff; width:auto; padding:0 10px; height:34px; border-radius:9px; font-weight:800;}
-  .del{background:none; font-size:17px; color:var(--red);}
+  .btn-line{background:#fff; color:#0A5D50; border:1.5px dashed var(--teal);}
+
+  .secmgr{background:var(--teal-light); border-radius:12px; padding:12px; margin-bottom:16px;}
+  .secmgr .ttl{font-size:15px; font-weight:900; color:#0A5D50; margin-bottom:8px;}
+  .secmgr .list{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;}
+  .secchip{display:inline-flex; align-items:center; gap:8px; background:#fff; border:1.5px solid #BBDDD4;
+    border-radius:999px; padding:7px 8px 7px 14px; font-size:14.5px; font-weight:800; color:#0A5D50;}
+  .secchip button{background:#FDECEC; color:var(--red); border-radius:999px; width:24px; height:24px; font-weight:900; font-size:12px;}
+  .secmgr .addrow{display:flex; gap:8px;}
+  .secmgr input{flex:1; padding:9px 12px; border-radius:10px; border:1.5px solid #BBDDD4; font-size:15px;}
+
+  .stcard{background:var(--sand); border:1px solid #EAE4D6; border-radius:14px; padding:12px; margin-bottom:12px;}
+  .strow1{display:flex; align-items:center; gap:12px; margin-bottom:10px;}
+  .stname{flex:1; min-width:0;}
+  .stname .n{font-weight:900; font-size:17px;}
+  .stname .s{font-size:13.5px; font-weight:700; color:var(--silver);}
+  .stpts{text-align:center; background:#fff; border:1.5px solid #E3DED2; border-radius:12px; padding:5px 14px;}
+  .stpts .n{font-weight:900; font-size:21px; color:var(--navy);}
+  .stpts .u{font-size:10.5px; font-weight:700; color:var(--silver);}
+  .reasons{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; margin-bottom:10px;}
+  .rbtn{display:flex; align-items:center; justify-content:center; gap:6px; border-radius:11px; padding:11px 6px;
+    font-size:14px; font-weight:800; color:#fff; line-height:1.2;}
+  .rbtn small{font-weight:900; background:rgba(255,255,255,.25); border-radius:7px; padding:0 6px;}
+  .r-hw{background:#155E92;}     /* واجبات */
+  .r-disc{background:#0E7C6B;}   /* التزام */
+  .r-part{background:#8A5A9E;}   /* مشاركة */
+  .r-exc{background:#C9820A;}    /* تميز */
+  .r-minus{background:#fff; color:var(--red); border:1.5px solid #E8C9C6;}
+  .strow3{display:flex; gap:8px; flex-wrap:wrap;}
+  .tool-sm{display:inline-flex; align-items:center; gap:6px; border-radius:10px; padding:9px 14px; font-size:14px; font-weight:800;}
+  .t-photo{background:var(--gold); color:#3A2C00;}
+  .t-delph{background:#FDECEC; color:var(--red);}
+  .t-del{background:#fff; border:1.5px solid #E8C9C6; color:var(--red);}
+
   .pinbar{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px dashed #D8D2C4;}
 
   .overlay{position:fixed; inset:0; background:rgba(10,30,49,.6); display:none; align-items:center; justify-content:center; padding:16px; z-index:50;}
   .overlay.show{display:flex;}
   .modal{background:#fff; border-radius:18px; padding:26px; width:100%; max-width:360px; text-align:center; border-top:5px solid var(--gold);}
-  .modal input{width:100%; padding:12px; border-radius:10px; border:2px solid #D8D2C4; font-size:20px; text-align:center; letter-spacing:6px; margin-top:14px;}
-  .modal .err{color:var(--red); font-size:13px; margin-top:8px; font-weight:700; min-height:18px;}
+  .modal input{width:100%; padding:12px; border-radius:10px; border:2px solid #CBC4B2; font-size:20px; text-align:center; letter-spacing:6px; margin-top:14px;}
+  .modal .err{color:var(--red); font-size:13.5px; margin-top:8px; font-weight:800; min-height:18px;}
   .modal .acts{display:flex; gap:8px; margin-top:16px;}
-  .modal .acts button{flex:1; padding:11px; border-radius:10px; font-size:15px; font-weight:800;}
+  .modal .acts button{flex:1; padding:12px; border-radius:10px; font-size:15.5px; font-weight:900;}
 
   #toast{position:fixed; bottom:20px; right:50%; transform:translateX(50%); background:var(--navy); color:#fff;
-    border-radius:999px; padding:10px 22px; font-size:14px; font-weight:700; box-shadow:0 6px 20px rgba(0,0,0,.25);
-    z-index:60; display:none;}
-  footer{text-align:center; margin-top:26px; font-size:12.5px; color:var(--silver); line-height:1.9;}
+    border-radius:999px; padding:11px 24px; font-size:14.5px; font-weight:800; box-shadow:0 6px 20px rgba(0,0,0,.25);
+    z-index:60; display:none; max-width:92vw; text-align:center;}
+  footer{text-align:center; margin-top:26px; font-size:13.5px; font-weight:700; color:var(--silver); line-height:1.9;}
 </style>
 </head>
 <body>
 
 <header>
   <div class="head-inner">
-    <svg viewBox="0 0 100 115" width="54" height="62" aria-hidden="true">
+    <svg viewBox="0 0 100 115" width="56" height="64" aria-hidden="true">
       <path d="M50 4 L92 18 V58 C92 84 74 102 50 111 C26 102 8 84 8 58 V18 Z" fill="#C9A227" stroke="#0A1E31" stroke-width="3"/>
       <path d="M50 14 L82 25 V57 C82 77 68 92 50 100 C32 92 18 77 18 57 V25 Z" fill="rgba(255,255,255,.22)"/>
       <text x="50" y="70" text-anchor="middle" font-size="38">⚔️</text>
@@ -119,19 +144,29 @@
 <main>
   <section id="managePanel" class="card" style="display:none">
     <h2 class="h2-line">🔧 إدارة الفرسان</h2>
+
+    <div class="secmgr">
+      <div class="ttl">🏫 الفصول</div>
+      <div class="list" id="secList"></div>
+      <div class="addrow">
+        <input id="newSecName" placeholder="اسم فصل جديد... مثال: 4/د">
+        <button class="btn btn-teal" id="btnAddSec">+ إضافة فصل</button>
+      </div>
+    </div>
+
     <div class="addbar">
       <input id="newName" placeholder="اسم الطالب كاملاً...">
-      <select id="newSection">
-        <option>4/أ</option><option>4/ب</option><option>4/ج</option>
-      </select>
+      <select id="newSection"></select>
       <button class="btn btn-teal" id="btnAdd">+ إضافة فارس</button>
     </div>
+
     <div id="manageList"></div>
+
     <div class="pinbar">
       <button class="btn btn-navy" id="btnPin">🔒 تغيير الرمز</button>
     </div>
-    <p style="font-size:12.5px; color:var(--silver); margin-top:10px; line-height:1.8">
-      ✨ كل تعديل يُحفظ فوراً في قاعدة البيانات ويظهر مباشرة لجميع الطلاب وأولياء الأمور — لا حاجة لتنزيل أو رفع أي ملفات.
+    <p style="font-size:13.5px; font-weight:700; color:var(--silver); margin-top:10px; line-height:1.8">
+      ✨ كل ضغطة زر تُحفظ فوراً وتظهر للجميع مباشرة — لا حاجة لتنزيل أو رفع أي ملفات.
     </p>
   </section>
 
@@ -145,6 +180,12 @@
     </div>
     <div id="board"><div class="empty">⏳ جارٍ تحميل الفرسان...</div></div>
     <div class="legend" id="legend"></div>
+    <div class="legend" style="border-top:none; margin-top:8px; padding-top:0">
+      <span style="background:#E8F1F9;color:#155E92">📘 حل الواجبات</span>
+      <span style="background:var(--teal-light);color:#0A5D50">🎯 الالتزام أثناء الحصة</span>
+      <span style="background:#F3EAF8;color:#8A5A9E">🙋 المشاركة الفعالة</span>
+      <span style="background:#FBF0DA;color:#9C6A08">🌟 تميز واختبارات</span>
+    </div>
   </section>
 
   <footer>
@@ -156,8 +197,8 @@
 <div class="overlay" id="pinOverlay">
   <div class="modal">
     <div style="font-size:40px">🔑</div>
-    <h3 style="margin:8px 0 4px; color:var(--navy); font-size:19px" id="pinTitle">دخول المعلم</h3>
-    <p style="font-size:13px; color:var(--silver)" id="pinDesc">أدخل الرمز السري للتعديل على المنصة</p>
+    <h3 style="margin:8px 0 4px; color:var(--navy); font-size:20px; font-weight:900" id="pinTitle">دخول المعلم</h3>
+    <p style="font-size:14px; font-weight:700; color:var(--silver)" id="pinDesc">أدخل الرمز السري للتعديل على المنصة</p>
     <input type="password" inputmode="numeric" id="pinInput" placeholder="• • • •">
     <div class="err" id="pinErr"></div>
     <div class="acts">
@@ -173,7 +214,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
-/* ═══ ربط Firebase — نفس قاعدة بيانات منصة التميز، قسم مستقل "forsan" ═══ */
+/* ═══ ربط Firebase — نفس قاعدة منصة التميز، قسم مستقل "forsan" ═══ */
 const firebaseConfig = {
   apiKey: "AIzaSyBfYecxpWH-0TMCRAWGQMsIrj4ImhcEUAk",
   authDomain: "razi-platform.firebaseapp.com",
@@ -187,17 +228,26 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const ROOT = "forsan";
 
+/* ═══ أسباب النقاط ═══ */
+const REASONS = {
+  hw:   {label:"حل الواجبات",        icon:"📘", pts:5,  cls:"r-hw"},
+  disc: {label:"الالتزام في الحصة",   icon:"🎯", pts:5,  cls:"r-disc"},
+  part: {label:"مشاركة فعالة",        icon:"🙋", pts:5,  cls:"r-part"},
+  exc:  {label:"تميز / اختبار",       icon:"🌟", pts:10, cls:"r-exc"},
+};
+
 /* ═══ الرتب ═══ */
 const RANKS = [
-  {min:300, name:"قائد الفرسان", color:"#C9A227", bg:"#FFF8E1", icon:"👑"},
-  {min:200, name:"فارس ذهبي",   color:"#B8860B", bg:"#FDF3D7", icon:"🥇"},
-  {min:100, name:"فارس فضي",    color:"#6B7B8C", bg:"#EEF2F6", icon:"🥈"},
-  {min:0,   name:"فارس مبتدئ",  color:"#A9714B", bg:"#F6ECE4", icon:"🛡️"},
+  {min:300, name:"قائد الفرسان", color:"#9C7A08", bg:"#FFF8E1", icon:"👑"},
+  {min:200, name:"فارس ذهبي",   color:"#9C6A08", bg:"#FDF3D7", icon:"🥇"},
+  {min:100, name:"فارس فضي",    color:"#51626F", bg:"#EEF2F6", icon:"🥈"},
+  {min:0,   name:"فارس مبتدئ",  color:"#8F5A38", bg:"#F6ECE4", icon:"🛡️"},
 ];
 const rankOf = p => RANKS.find(r => p >= r.min) || RANKS[RANKS.length-1];
 
 let PIN = "1234";
-let STUDENTS = {};   // {id: {id,name,section,points,img?}}
+let STUDENTS = {};
+let SECTIONS = ["4/أ","4/ب","4/ج"];
 let teacher = false;
 let sectionFilter = "الكل";
 let photoTargetId = null;
@@ -206,18 +256,21 @@ let connected = false;
 const $ = id => document.getElementById(id);
 function toast(msg){
   const t = $("toast"); t.textContent = msg; t.style.display = "block";
-  clearTimeout(t._h); t._h = setTimeout(()=> t.style.display="none", 2500);
+  clearTimeout(t._h); t._h = setTimeout(()=> t.style.display="none", 2600);
 }
 function esc(s){ return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function normList(v){ return !v ? [] : (Array.isArray(v) ? v.filter(Boolean) : Object.values(v)); }
 
-/* ═══ الاستماع المباشر: أي تحديث يظهر للجميع فوراً ═══ */
+/* ═══ الاستماع المباشر ═══ */
 db.ref(ROOT).on("value", snap => {
   const val = snap.val();
   if (!val) {
-    db.ref(ROOT).set({ pin: PIN, students: {} });
+    db.ref(ROOT).set({ pin: PIN, sections: SECTIONS, students: {} });
     return;
   }
   if (val.pin) PIN = String(val.pin);
+  SECTIONS = normList(val.sections);
+  if (SECTIONS.length === 0) SECTIONS = ["4/أ"];
   STUDENTS = val.students || {};
   if (!connected){
     connected = true;
@@ -229,13 +282,19 @@ db.ref(ROOT).on("value", snap => {
   $("netState").textContent = "⚠️ تعذر الاتصال — تحقق من الإنترنت";
 });
 
-/* ═══ العرض ═══ */
 function list(){ return Object.values(STUDENTS); }
-function sorted(){ return list().sort((a,b)=> b.points - a.points); }
+function sorted(){ return list().sort((a,b)=> (b.points||0) - (a.points||0)); }
 function avatarHTML(st, size, ring){
   return `<div class="avatar" style="width:${size}px;height:${size}px;border-color:${ring}">
     ${st.img ? `<img src="${st.img}" alt="${esc(st.name)}">` : `<span style="font-size:${size*.45}px">🛡️</span>`}
   </div>`;
+}
+function badgesHTML(st){
+  const s = st.stats || {};
+  const parts = Object.keys(REASONS)
+    .filter(k => s[k] > 0)
+    .map(k => `<span title="${REASONS[k].label}">${REASONS[k].icon} ${s[k]}</span>`);
+  return parts.length ? `<div class="badges">${parts.join("")}</div>` : "";
 }
 
 function render(){
@@ -255,18 +314,18 @@ function render(){
       const bg = place===1 ? "linear-gradient(180deg,#C9A227,#A8861D)" : "linear-gradient(180deg,#0F2A43,#0A1E31)";
       const ring = place===1 ? "#C9A227" : "#8C9BAA";
       return `<div class="pod">
-        ${avatarHTML(s, place===1?72:58, ring)}
-        <div style="font-size:22px;margin-top:4px">${medal}</div>
+        ${avatarHTML(s, place===1?74:60, ring)}
+        <div style="font-size:23px;margin-top:4px">${medal}</div>
         <div class="pod-name">${esc(s.name)}</div>
         <div class="pod-bar" style="height:${h}px;background:${bg}">
-          <div class="pts">${s.points}</div><div class="lbl">نقطة</div>
+          <div class="pts">${s.points||0}</div><div class="lbl">نقطة</div>
         </div>
       </div>`;
     }).join("");
   }
 
   /* الفلاتر */
-  const secs = ["الكل", ...new Set(list().map(s=>s.section))];
+  const secs = ["الكل", ...SECTIONS];
   $("chips").innerHTML = secs.map(sec=>
     `<button class="chip ${sec===sectionFilter?'on':''}" data-sec="${esc(sec)}">${esc(sec)}</button>`).join("");
   $("chips").querySelectorAll("button").forEach(b=>
@@ -275,7 +334,7 @@ function render(){
   /* لوحة الشرف */
   const q = $("search").value.trim();
   const filtered = srt.filter(s =>
-    (sectionFilter==="الكل" || s.section===sectionFilter) && s.name.includes(q));
+    (sectionFilter==="الكل" || s.section===sectionFilter) && String(s.name).includes(q));
   const board = $("board");
   if (!connected) {
     board.innerHTML = `<div class="empty">⏳ جارٍ تحميل الفرسان...</div>`;
@@ -284,16 +343,17 @@ function render(){
       "ستظهر أسماء الفرسان هنا قريباً بإذن الله 🛡️" : "لا توجد نتائج مطابقة للبحث."}</div>`;
   } else {
     board.innerHTML = filtered.map(s=>{
-      const r = rankOf(s.points);
+      const r = rankOf(s.points||0);
       const place = srt.indexOf(s)+1;
       return `<div class="row" style="background:${r.bg};border-right:5px solid ${r.color}">
         <div class="place">${place}</div>
-        ${avatarHTML(s, 48, r.color)}
+        ${avatarHTML(s, 50, r.color)}
         <div class="info">
           <div class="nm">${esc(s.name)}</div>
           <div class="rk" style="color:${r.color}">${r.icon} ${r.name} • ${esc(s.section)}</div>
+          ${badgesHTML(s)}
         </div>
-        <div class="pts"><div class="n">${s.points}</div><div class="u">نقطة</div></div>
+        <div class="pts"><div class="n">${s.points||0}</div><div class="u">نقطة</div></div>
       </div>`;
     }).join("");
   }
@@ -304,42 +364,76 @@ function render(){
   if (teacher) renderManage();
 }
 
+/* ═══ لوحة الإدارة ═══ */
 function renderManage(){
+  /* الفصول */
+  $("secList").innerHTML = SECTIONS.map((sec,i)=>{
+    const used = list().some(s=>s.section===sec);
+    return `<span class="secchip">${esc(sec)}
+      <button title="${used?'لا يمكن حذف فصل فيه طلاب':'حذف الفصل'}" data-delsec="${i}" ${used?'style="opacity:.35"':''}>✖</button>
+    </span>`;
+  }).join("");
+  $("secList").querySelectorAll("[data-delsec]").forEach(b=> b.onclick = ()=>{
+    const i = +b.dataset.delsec;
+    const sec = SECTIONS[i];
+    if (list().some(s=>s.section===sec)){ toast("انقل طلاب الفصل أولاً قبل حذفه"); return; }
+    if (!confirm(`حذف الفصل "${sec}"؟`)) return;
+    const ns = SECTIONS.filter((_,x)=>x!==i);
+    db.ref(`${ROOT}/sections`).set(ns).catch(()=>toast("⚠️ تعذر الحفظ"));
+  });
+
+  const sel = $("newSection");
+  const cur = sel.value;
+  sel.innerHTML = SECTIONS.map(s=>`<option>${esc(s)}</option>`).join("");
+  if (SECTIONS.includes(cur)) sel.value = cur;
+
+  /* الطلاب */
   $("manageList").innerHTML = sorted().map(s=>`
-    <div class="mrow">
-      <div class="photo-wrap">
-        ${avatarHTML(s, 46, "#0E7C6B")}
-        <button class="cam" title="رفع صورة الطالب" data-photo="${s.id}">📷</button>
-        ${s.img ? `<button class="delph" title="حذف الصورة" data-delph="${s.id}">✖</button>` : ""}
+    <div class="stcard">
+      <div class="strow1">
+        ${avatarHTML(s, 52, "#0E7C6B")}
+        <div class="stname">
+          <div class="n">${esc(s.name)}</div>
+          <div class="s">${esc(s.section)} • ${rankOf(s.points||0).name}</div>
+        </div>
+        <div class="stpts"><div class="n">${s.points||0}</div><div class="u">نقطة</div></div>
       </div>
-      <div style="flex:1 1 140px;min-width:120px">
-        <div style="font-weight:700;font-size:15px">${esc(s.name)}</div>
-        <div style="font-size:12px;color:var(--silver)">${esc(s.section)} • ${rankOf(s.points).name}</div>
+      <div class="reasons">
+        ${Object.entries(REASONS).map(([k,r])=>`
+          <button class="rbtn ${r.cls}" data-award="${s.id}|${k}">${r.icon} ${r.label} <small>+${r.pts}</small></button>
+        `).join("")}
+        <button class="rbtn r-minus" data-minus="${s.id}">➖ خصم <small>−5</small></button>
       </div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <button class="ptbtn minus" data-pt="${s.id}|-5">−5</button>
-        <div style="min-width:52px;text-align:center;font-weight:800;font-size:17px;color:var(--navy)">${s.points}</div>
-        <button class="ptbtn plus" data-pt="${s.id}|5">+5</button>
-        <button class="plus10" data-pt="${s.id}|10">+10</button>
+      <div class="strow3">
+        <button class="tool-sm t-photo" data-photo="${s.id}">📷 ${s.img?"تغيير الصورة":"رفع صورة"}</button>
+        ${s.img?`<button class="tool-sm t-delph" data-delph="${s.id}">✖ حذف الصورة</button>`:""}
+        <button class="tool-sm t-del" data-del="${s.id}">🗑️ حذف الفارس</button>
       </div>
-      <button class="del" title="حذف" data-del="${s.id}">🗑️</button>
     </div>`).join("");
 
-  $("manageList").querySelectorAll("[data-pt]").forEach(b=> b.onclick = ()=>{
-    const [id, d] = b.dataset.pt.split("|");
-    const st = STUDENTS[id];
-    if (st){
-      const pts = Math.max(0, (st.points||0) + parseInt(d));
-      db.ref(`${ROOT}/students/${id}/points`).set(pts)
-        .catch(()=> toast("⚠️ تعذر الحفظ — تحقق من الإنترنت"));
-    }
+  $("manageList").querySelectorAll("[data-award]").forEach(b=> b.onclick = ()=>{
+    const [id, k] = b.dataset.award.split("|");
+    const st = STUDENTS[id]; if (!st) return;
+    const r = REASONS[k];
+    const stats = st.stats || {};
+    db.ref(`${ROOT}/students/${id}`).update({
+      points: Math.max(0,(st.points||0) + r.pts),
+      ["stats/"+k]: (stats[k]||0) + 1
+    })
+    .then(()=> toast(`${r.icon} ${r.label} +${r.pts} — ${st.name}`))
+    .catch(()=> toast("⚠️ تعذر الحفظ — تحقق من الإنترنت"));
+  });
+  $("manageList").querySelectorAll("[data-minus]").forEach(b=> b.onclick = ()=>{
+    const st = STUDENTS[b.dataset.minus]; if (!st) return;
+    db.ref(`${ROOT}/students/${st.id}/points`).set(Math.max(0,(st.points||0)-5))
+      .catch(()=> toast("⚠️ تعذر الحفظ"));
   });
   $("manageList").querySelectorAll("[data-del]").forEach(b=> b.onclick = ()=>{
     const st = STUDENTS[b.dataset.del];
     if (st && confirm(`حذف الفارس "${st.name}" نهائياً؟`)){
       db.ref(`${ROOT}/students/${st.id}`).remove()
         .then(()=> toast("تم حذف الفارس"))
-        .catch(()=> toast("⚠️ تعذر الحذف — تحقق من الإنترنت"));
+        .catch(()=> toast("⚠️ تعذر الحذف"));
     }
   });
   $("manageList").querySelectorAll("[data-photo]").forEach(b=> b.onclick = ()=>{
@@ -354,7 +448,18 @@ function renderManage(){
   });
 }
 
-/* ═══ رفع صورة (ضغط تلقائي 160px) ═══ */
+/* ═══ إضافة فصل ═══ */
+$("btnAddSec").onclick = ()=>{
+  const name = $("newSecName").value.trim();
+  if (!name) return;
+  if (SECTIONS.includes(name)){ toast("هذا الفصل موجود مسبقاً"); return; }
+  db.ref(`${ROOT}/sections`).set([...SECTIONS, name])
+    .then(()=>{ $("newSecName").value=""; toast("تمت إضافة الفصل: "+name); })
+    .catch(()=> toast("⚠️ تعذر الحفظ"));
+};
+$("newSecName").addEventListener("keydown", e=>{ if(e.key==="Enter") $("btnAddSec").click(); });
+
+/* ═══ رفع صورة (ضغط تلقائي 200px) ═══ */
 $("photoFile").onchange = e => {
   const file = e.target.files[0];
   if (!file || !photoTargetId) return;
@@ -363,11 +468,11 @@ $("photoFile").onchange = e => {
     const img = new Image();
     img.onload = () => {
       const cv = document.createElement("canvas");
-      const S = 160; cv.width = S; cv.height = S;
+      const S = 200; cv.width = S; cv.height = S;
       const ctx = cv.getContext("2d");
       const m = Math.min(img.width, img.height);
       ctx.drawImage(img, (img.width-m)/2, (img.height-m)/2, m, m, 0, 0, S, S);
-      const data = cv.toDataURL("image/jpeg", .65);
+      const data = cv.toDataURL("image/jpeg", .7);
       db.ref(`${ROOT}/students/${photoTargetId}/img`).set(data)
         .then(()=> toast("تم رفع الصورة ✓"))
         .catch(()=> toast("⚠️ تعذر رفع الصورة"));
