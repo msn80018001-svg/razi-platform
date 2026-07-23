@@ -1,491 +1,461 @@
-import React, { useState, useEffect, useRef } from "react";
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فرسان العلوم — الصف الرابع</title>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F2A43; --navy-deep:#0A1E31; --teal:#0E7C6B; --teal-light:#E6F4F1;
+    --gold:#C9A227; --gold-light:#F5E9C8; --sand:#FAF7F0; --ink:#1C2B36;
+    --silver:#8C9BAA; --bronze:#A9714B; --red:#B4423A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--sand); font-family:'Tajawal',sans-serif; color:var(--ink); min-height:100vh;}
+  button{font-family:'Tajawal',sans-serif; cursor:pointer; border:none;}
+  input,select{font-family:'Tajawal',sans-serif; font-size:15px;}
+  input:focus,select:focus,button:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
 
-// ============ الألوان والهوية ============
-const C = {
-  navy: "#0F2A43",
-  navyDeep: "#0A1E31",
-  teal: "#0E7C6B",
-  tealLight: "#E6F4F1",
-  gold: "#C9A227",
-  goldLight: "#F5E9C8",
-  sand: "#FAF7F0",
-  ink: "#1C2B36",
-  silver: "#8C9BAA",
-  bronze: "#A9714B",
-  red: "#B4423A",
+  header{background:linear-gradient(135deg,var(--navy-deep),var(--navy) 60%,#143A5C); color:#fff;
+    padding:28px 20px 22px; text-align:center; position:relative; border-bottom:5px solid var(--gold);}
+  .head-inner{display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;}
+  h1{font-family:'Aref Ruqaa',serif; font-size:clamp(30px,6vw,44px); color:var(--gold-light); letter-spacing:1px;}
+  .subtitle{font-size:14px; color:#B9CBDC; font-weight:500;}
+  .btn-teacher{position:absolute; top:14px; left:14px; background:rgba(255,255,255,.12); color:#fff;
+    border:1px solid rgba(255,255,255,.35); border-radius:10px; padding:8px 14px; font-size:13px; font-weight:700;}
+  .btn-teacher.on{background:var(--teal); border-color:var(--teal);}
+  .btn-exit{position:absolute; top:14px; right:14px; background:rgba(255,255,255,.12); color:#fff;
+    border:1px solid rgba(255,255,255,.35); border-radius:10px; padding:8px 14px; font-size:13px; font-weight:700;}
+
+  main{max-width:980px; margin:0 auto; padding:22px 14px 60px;}
+  .card{background:#fff; border-radius:16px; border:1px solid #E3DED2; box-shadow:0 4px 18px rgba(15,42,67,.07); padding:18px; margin-bottom:26px;}
+  h2{font-size:20px; color:var(--navy); margin-bottom:14px;}
+  .h2-line{border-bottom:3px solid var(--gold-light); padding-bottom:8px;}
+
+  .avatar{border-radius:50%; border:3px solid var(--teal); background:var(--teal-light); overflow:hidden;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .avatar img{width:100%; height:100%; object-fit:cover;}
+
+  /* منصة التتويج */
+  .podium{display:flex; justify-content:center; align-items:flex-end; gap:10px; margin-bottom:26px;}
+  .pod{text-align:center; width:clamp(92px,28vw,150px); display:flex; flex-direction:column; align-items:center;}
+  .pod-name{font-weight:800; font-size:13px; color:var(--navy); line-height:1.3; min-height:34px;}
+  .pod-bar{width:100%; border-radius:12px 12px 0 0; color:#fff; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; margin-top:6px;}
+  .pod-bar .pts{font-size:26px; font-weight:800;}
+  .pod-bar .lbl{font-size:11px; opacity:.85;}
+
+  /* لوحة الشرف */
+  .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}
+  .toolbar input{flex:1 1 180px; padding:9px 12px; border-radius:10px; border:1.5px solid #D8D2C4; font-size:14px;}
+  .chip{padding:8px 13px; border-radius:999px; font-size:13px; font-weight:700; background:var(--teal-light); color:var(--teal);}
+  .chip.on{background:var(--navy); color:#fff;}
+  .row{display:flex; align-items:center; gap:12px; border-radius:12px; padding:9px 12px; margin-bottom:8px;}
+  .row .place{width:30px; text-align:center; font-weight:800; font-size:15px; color:var(--silver);}
+  .row .info{flex:1; min-width:0;}
+  .row .nm{font-weight:800; font-size:15.5px;}
+  .row .rk{font-size:12.5px; font-weight:700;}
+  .row .pts{text-align:center;}
+  .row .pts .n{font-weight:800; font-size:19px; color:var(--navy);}
+  .row .pts .u{font-size:10.5px; color:var(--silver);}
+  .legend{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:18px; padding-top:14px; border-top:1px dashed #D8D2C4;}
+  .legend span{font-size:12.5px; font-weight:700; border-radius:999px; padding:5px 12px;}
+  .empty{text-align:center; color:var(--silver); padding:30px; font-size:15px;}
+
+  /* لوحة المعلم */
+  .addbar{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
+  .addbar input{flex:1 1 220px; padding:10px 12px; border-radius:10px; border:1.5px solid #D8D2C4;}
+  .addbar select{padding:10px 12px; border-radius:10px; border:1.5px solid #D8D2C4;}
+  .btn{border-radius:10px; padding:10px 20px; font-size:15px; font-weight:700; color:#fff;}
+  .btn-teal{background:var(--teal);}
+  .btn-navy{background:var(--navy);}
+  .btn-gold{background:var(--gold); color:var(--navy-deep);}
+  .mrow{display:flex; align-items:center; gap:10px; background:var(--sand); border-radius:12px; padding:8px 10px; flex-wrap:wrap; margin-bottom:8px;}
+  .photo-wrap{position:relative;}
+  .cam{position:absolute; bottom:-4px; left:-4px; width:24px; height:24px; border-radius:50%;
+    background:var(--gold); border:2px solid #fff; font-size:12px; display:flex; align-items:center; justify-content:center; padding:0;}
+  .ptbtn{width:34px; height:34px; border-radius:9px; font-weight:800; font-size:14px;}
+  .minus{border:1.5px solid #D8D2C4; background:#fff; color:var(--red);}
+  .plus{background:var(--teal); color:#fff;}
+  .plus10{background:var(--navy); color:#fff; width:auto; padding:0 10px; height:34px; border-radius:9px; font-weight:800;}
+  .del{background:none; font-size:17px; color:var(--red);}
+  .pubbar{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px dashed #D8D2C4;}
+
+  /* نافذة الرمز */
+  .overlay{position:fixed; inset:0; background:rgba(10,30,49,.6); display:none; align-items:center; justify-content:center; padding:16px; z-index:50;}
+  .overlay.show{display:flex;}
+  .modal{background:#fff; border-radius:18px; padding:26px; width:100%; max-width:360px; text-align:center; border-top:5px solid var(--gold);}
+  .modal input{width:100%; padding:12px; border-radius:10px; border:2px solid #D8D2C4; font-size:20px; text-align:center; letter-spacing:6px; margin-top:14px;}
+  .modal .err{color:var(--red); font-size:13px; margin-top:8px; font-weight:700; min-height:18px;}
+  .modal .acts{display:flex; gap:8px; margin-top:16px;}
+  .modal .acts button{flex:1; padding:11px; border-radius:10px; font-size:15px; font-weight:800;}
+
+  #toast{position:fixed; bottom:20px; right:50%; transform:translateX(50%); background:var(--navy); color:#fff;
+    border-radius:999px; padding:10px 22px; font-size:14px; font-weight:700; box-shadow:0 6px 20px rgba(0,0,0,.25);
+    z-index:60; display:none;}
+  footer{text-align:center; margin-top:26px; font-size:12.5px; color:var(--silver);}
+  @media (prefers-reduced-motion: no-preference){
+    .row, .mrow{transition:transform .15s;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ البيانات المضمّنة (لا تعدّل يدوياً) ═══════════ -->
+<script type="application/json" id="app-data">
+{"config":{"pin":"1234","title":"فرسان العلوم","school":"مدرسة أبي بكر الرازي الابتدائية","sections":["4/أ","4/ب","4/ج"]},"students":[],"photos":{}}
+</script>
+
+<header>
+  <div class="head-inner">
+    <svg viewBox="0 0 100 115" width="54" height="62" aria-hidden="true">
+      <path d="M50 4 L92 18 V58 C92 84 74 102 50 111 C26 102 8 84 8 58 V18 Z" fill="#C9A227" stroke="#0A1E31" stroke-width="3"/>
+      <path d="M50 14 L82 25 V57 C82 77 68 92 50 100 C32 92 18 77 18 57 V25 Z" fill="rgba(255,255,255,.22)"/>
+      <text x="50" y="70" text-anchor="middle" font-size="38">⚔️</text>
+    </svg>
+    <div>
+      <h1>فرسان العلوم</h1>
+      <div class="subtitle" id="subtitle">الصف الرابع الابتدائي • مدرسة أبي بكر الرازي الابتدائية</div>
+    </div>
+  </div>
+  <button class="btn-teacher" id="btnTeacher">🔑 دخول المعلم</button>
+  <button class="btn-exit" id="btnExit" style="display:none">خروج</button>
+</header>
+
+<main>
+  <section id="managePanel" class="card" style="display:none">
+    <h2 class="h2-line">🔧 إدارة الفرسان</h2>
+    <div class="addbar">
+      <input id="newName" placeholder="اسم الطالب كاملاً...">
+      <select id="newSection"></select>
+      <button class="btn btn-teal" id="btnAdd">+ إضافة فارس</button>
+    </div>
+    <div id="manageList"></div>
+    <div class="pubbar">
+      <button class="btn btn-gold" id="btnExport">⬇️ تنزيل نسخة للنشر</button>
+      <button class="btn btn-navy" id="btnPin">🔒 تغيير الرمز</button>
+    </div>
+    <p style="font-size:12.5px; color:var(--silver); margin-top:10px; line-height:1.7">
+      بعد الانتهاء من التعديل اضغط "تنزيل نسخة للنشر" ثم ارفع الملف الجديد على GitHub بدل القديم — هكذا يشاهد الجميع آخر النتائج.
+      تعديلاتك محفوظة أيضاً على هذا الجهاز كمسودة حتى لو أغلقت الصفحة.
+    </p>
+  </section>
+
+  <section id="podium" class="podium"></section>
+
+  <section class="card" id="boardCard">
+    <div class="toolbar">
+      <h2 style="flex:1 1 auto; margin:0">🏅 لوحة الشرف</h2>
+      <input id="search" placeholder="🔍 ابحث عن اسم الفارس...">
+      <div id="chips" style="display:flex; gap:6px; flex-wrap:wrap"></div>
+    </div>
+    <div id="board"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <footer>منصة فرسان العلوم • إعداد المعلم: حمدان عمار المحياوي • العام الدراسي 1448هـ</footer>
+</main>
+
+<!-- نافذة الرمز -->
+<div class="overlay" id="pinOverlay">
+  <div class="modal">
+    <div style="font-size:40px">🔑</div>
+    <h3 style="margin:8px 0 4px; color:var(--navy); font-size:19px" id="pinTitle">دخول المعلم</h3>
+    <p style="font-size:13px; color:var(--silver)" id="pinDesc">أدخل الرمز السري للتعديل على المنصة</p>
+    <input type="password" inputmode="numeric" id="pinInput" placeholder="• • • •">
+    <div class="err" id="pinErr"></div>
+    <div class="acts">
+      <button class="btn-teal" id="pinOk" style="background:var(--teal); color:#fff">دخول</button>
+      <button id="pinCancel" style="background:#EEE9DD; color:var(--ink)">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<input type="file" accept="image/*" id="photoFile" style="display:none">
+
+<script>
+/* ═══ التقاط نص الصفحة الأصلي قبل أي عرض (لأجل التصدير) ═══ */
+const PAGE_SOURCE = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+
+/* ═══ تحميل البيانات ═══ */
+const RANKS = [
+  {min:300, name:"قائد الفرسان", color:"#C9A227", bg:"#FFF8E1", icon:"👑"},
+  {min:200, name:"فارس ذهبي",   color:"#B8860B", bg:"#FDF3D7", icon:"🥇"},
+  {min:100, name:"فارس فضي",    color:"#6B7B8C", bg:"#EEF2F6", icon:"🥈"},
+  {min:0,   name:"فارس مبتدئ",  color:"#A9714B", bg:"#F6ECE4", icon:"🛡️"},
+];
+const rankOf = p => RANKS.find(r => p >= r.min) || RANKS[RANKS.length-1];
+
+let DATA = JSON.parse(document.getElementById("app-data").textContent);
+let teacher = false;
+let sectionFilter = "الكل";
+let photoTargetId = null;
+
+/* مسودة محلية على جهاز المعلم */
+const DRAFT_KEY = "forsan-draft";
+try {
+  const draft = localStorage.getItem(DRAFT_KEY);
+  if (draft) {
+    const d = JSON.parse(draft);
+    if (JSON.stringify(d) !== JSON.stringify(DATA)) {
+      // تُستخدم المسودة فقط بعد دخول المعلم وتأكيده
+      window.__draft = d;
+    }
+  }
+} catch(e){}
+
+function saveDraft(){
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(DATA)); } catch(e){}
+}
+
+/* ═══ أدوات ═══ */
+const $ = id => document.getElementById(id);
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.style.display = "block";
+  clearTimeout(t._h); t._h = setTimeout(()=> t.style.display="none", 2500);
+}
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function avatarHTML(st, size, ring){
+  const ph = DATA.photos[st.id];
+  return `<div class="avatar" style="width:${size}px;height:${size}px;border-color:${ring}">
+    ${ph ? `<img src="${ph}" alt="${esc(st.name)}">` : `<span style="font-size:${size*.45}px">🛡️</span>`}
+  </div>`;
+}
+
+/* ═══ العرض ═══ */
+function sortedStudents(){ return [...DATA.students].sort((a,b)=> b.points - a.points); }
+
+function render(){
+  $("subtitle").textContent = "الصف الرابع الابتدائي • " + DATA.config.school;
+  const sorted = sortedStudents();
+
+  /* منصة التتويج */
+  const top3 = sorted.slice(0,3);
+  const pod = $("podium");
+  if (top3.length === 0 || (teacher && $("managePanel").style.display !== "none")) {
+    pod.innerHTML = "";
+  } else {
+    const order = [top3[1], top3[0], top3[2]].filter(Boolean);
+    pod.innerHTML = order.map(s=>{
+      const place = s===top3[0]?1 : s===top3[1]?2 : 3;
+      const h = place===1?150 : place===2?118 : 100;
+      const medal = place===1?"👑" : place===2?"🥈" : "🥉";
+      const bg = place===1 ? "linear-gradient(180deg,#C9A227,#A8861D)" : "linear-gradient(180deg,#0F2A43,#0A1E31)";
+      const ring = place===1 ? "#C9A227" : "#8C9BAA";
+      return `<div class="pod">
+        ${avatarHTML(s, place===1?72:58, ring)}
+        <div style="font-size:22px;margin-top:4px">${medal}</div>
+        <div class="pod-name">${esc(s.name)}</div>
+        <div class="pod-bar" style="height:${h}px;background:${bg}">
+          <div class="pts">${s.points}</div><div class="lbl">نقطة</div>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  /* الفلاتر */
+  const secs = ["الكل", ...new Set(DATA.students.map(s=>s.section))];
+  $("chips").innerHTML = secs.map(sec=>
+    `<button class="chip ${sec===sectionFilter?'on':''}" data-sec="${esc(sec)}">${esc(sec)}</button>`).join("");
+  $("chips").querySelectorAll("button").forEach(b=>
+    b.onclick = ()=>{ sectionFilter = b.dataset.sec; render(); });
+
+  /* لوحة الشرف */
+  const q = $("search").value.trim();
+  const filtered = sorted.filter(s =>
+    (sectionFilter==="الكل" || s.section===sectionFilter) && s.name.includes(q));
+  const board = $("board");
+  if (filtered.length === 0) {
+    board.innerHTML = `<div class="empty">${DATA.students.length===0 ?
+      "ستظهر أسماء الفرسان هنا قريباً بإذن الله 🛡️" : "لا توجد نتائج مطابقة للبحث."}</div>`;
+  } else {
+    board.innerHTML = filtered.map(s=>{
+      const r = rankOf(s.points);
+      const place = sorted.indexOf(s)+1;
+      return `<div class="row" style="background:${r.bg};border-right:5px solid ${r.color}">
+        <div class="place">${place}</div>
+        ${avatarHTML(s, 48, r.color)}
+        <div class="info">
+          <div class="nm">${esc(s.name)}</div>
+          <div class="rk" style="color:${r.color}">${r.icon} ${r.name} • ${esc(s.section)}</div>
+        </div>
+        <div class="pts"><div class="n">${s.points}</div><div class="u">نقطة</div></div>
+      </div>`;
+    }).join("");
+  }
+
+  /* مفتاح الرتب */
+  $("legend").innerHTML = RANKS.slice().reverse().map(r=>
+    `<span style="color:${r.color};background:${r.bg}">${r.icon} ${r.name} (${r.min}+)</span>`).join("");
+
+  /* لوحة الإدارة */
+  if (teacher) renderManage();
+}
+
+function renderManage(){
+  const sel = $("newSection");
+  sel.innerHTML = DATA.config.sections.map(s=>`<option>${esc(s)}</option>`).join("");
+  $("manageList").innerHTML = sortedStudents().map(s=>`
+    <div class="mrow">
+      <div class="photo-wrap">
+        ${avatarHTML(s, 46, "#0E7C6B")}
+        <button class="cam" title="رفع صورة الطالب" data-photo="${s.id}">📷</button>
+      </div>
+      <div style="flex:1 1 140px;min-width:120px">
+        <div style="font-weight:700;font-size:15px">${esc(s.name)}</div>
+        <div style="font-size:12px;color:var(--silver)">${esc(s.section)} • ${rankOf(s.points).name}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="ptbtn minus" data-pt="${s.id}|-5">−5</button>
+        <div style="min-width:52px;text-align:center;font-weight:800;font-size:17px;color:var(--navy)">${s.points}</div>
+        <button class="ptbtn plus" data-pt="${s.id}|5">+5</button>
+        <button class="plus10" data-pt="${s.id}|10">+10</button>
+      </div>
+      <button class="del" title="حذف" data-del="${s.id}">🗑️</button>
+    </div>`).join("");
+
+  $("manageList").querySelectorAll("[data-pt]").forEach(b=> b.onclick = ()=>{
+    const [id, d] = b.dataset.pt.split("|");
+    const st = DATA.students.find(x=>x.id===id);
+    if (st){ st.points = Math.max(0, st.points + parseInt(d)); saveDraft(); render(); }
+  });
+  $("manageList").querySelectorAll("[data-del]").forEach(b=> b.onclick = ()=>{
+    const st = DATA.students.find(x=>x.id===b.dataset.del);
+    if (st && confirm(`حذف الفارس "${st.name}" نهائياً؟`)){
+      DATA.students = DATA.students.filter(x=>x.id!==st.id);
+      delete DATA.photos[st.id];
+      saveDraft(); render();
+    }
+  });
+  $("manageList").querySelectorAll("[data-photo]").forEach(b=> b.onclick = ()=>{
+    photoTargetId = b.dataset.photo;
+    $("photoFile").click();
+  });
+}
+
+/* ═══ رفع صورة (ضغط تلقائي 160px) ═══ */
+$("photoFile").onchange = e => {
+  const file = e.target.files[0];
+  if (!file || !photoTargetId) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const cv = document.createElement("canvas");
+      const S = 160; cv.width = S; cv.height = S;
+      const ctx = cv.getContext("2d");
+      const m = Math.min(img.width, img.height);
+      ctx.drawImage(img, (img.width-m)/2, (img.height-m)/2, m, m, 0, 0, S, S);
+      DATA.photos[photoTargetId] = cv.toDataURL("image/jpeg", .65);
+      photoTargetId = null;
+      saveDraft(); render(); toast("تم رفع الصورة ✓");
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value = "";
 };
 
-// ============ الرتب ============
-const RANKS = [
-  { min: 300, name: "قائد الفرسان", color: C.gold, bg: "#FFF8E1", icon: "👑" },
-  { min: 200, name: "فارس ذهبي", color: "#B8860B", bg: "#FDF3D7", icon: "🥇" },
-  { min: 100, name: "فارس فضي", color: "#6B7B8C", bg: "#EEF2F6", icon: "🥈" },
-  { min: 0, name: "فارس مبتدئ", color: C.bronze, bg: "#F6ECE4", icon: "🛡️" },
-];
-const rankOf = (pts) => RANKS.find((r) => pts >= r.min) || RANKS[RANKS.length - 1];
-
-// ============ درع الفارس SVG ============
-function Shield({ color, size = 40, icon }) {
-  return (
-    <div style={{ position: "relative", width: size, height: size * 1.15, flexShrink: 0 }}>
-      <svg viewBox="0 0 100 115" width={size} height={size * 1.15}>
-        <path
-          d="M50 4 L92 18 V58 C92 84 74 102 50 111 C26 102 8 84 8 58 V18 Z"
-          fill={color}
-          stroke={C.navyDeep}
-          strokeWidth="3"
-        />
-        <path
-          d="M50 14 L82 25 V57 C82 77 68 92 50 100 C32 92 18 77 18 57 V25 Z"
-          fill="rgba(255,255,255,0.22)"
-        />
-      </svg>
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: size * 0.42,
-          paddingBottom: size * 0.12,
-        }}
-      >
-        {icon}
-      </div>
-    </div>
-  );
+/* ═══ إضافة طالب ═══ */
+$("btnAdd").onclick = addStudent;
+$("newName").addEventListener("keydown", e=>{ if(e.key==="Enter") addStudent(); });
+function addStudent(){
+  const name = $("newName").value.trim();
+  if (!name) return;
+  DATA.students.push({
+    id: "s"+Date.now()+Math.floor(Math.random()*1000),
+    name, section: $("newSection").value, points: 0
+  });
+  $("newName").value = "";
+  saveDraft(); render(); toast("تمت إضافة الفارس: " + name);
 }
 
-// ============ صورة الطالب ============
-function Avatar({ photo, name, size = 52, ring = C.teal }) {
-  return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: "50%",
-        border: `3px solid ${ring}`,
-        background: C.tealLight,
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexShrink: 0,
-      }}
-    >
-      {photo ? (
-        <img src={photo} alt={name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-      ) : (
-        <span style={{ fontSize: size * 0.45 }}>🛡️</span>
-      )}
-    </div>
-  );
+/* ═══ دخول المعلم ═══ */
+let pinMode = "login"; // login | change
+$("btnTeacher").onclick = ()=>{
+  if (teacher){
+    const mp = $("managePanel");
+    mp.style.display = mp.style.display === "none" ? "block" : "none";
+    $("btnTeacher").textContent = mp.style.display==="none" ? "🔧 لوحة المعلم" : "👁️ عرض اللوحة";
+    render();
+  } else {
+    pinMode = "login";
+    $("pinTitle").textContent = "دخول المعلم";
+    $("pinDesc").textContent = "أدخل الرمز السري للتعديل على المنصة";
+    $("pinOk").textContent = "دخول";
+    openPin();
+  }
+};
+$("btnExit").onclick = ()=>{
+  teacher = false;
+  $("managePanel").style.display = "none";
+  $("btnExit").style.display = "none";
+  $("btnTeacher").textContent = "🔑 دخول المعلم";
+  $("btnTeacher").classList.remove("on");
+  render();
+};
+$("btnPin").onclick = ()=>{
+  pinMode = "change";
+  $("pinTitle").textContent = "تغيير رمز المعلم";
+  $("pinDesc").textContent = "أدخل الرمز الجديد (4 أرقام أو أكثر) — سيُحفظ في النسخة المصدَّرة";
+  $("pinOk").textContent = "حفظ الرمز";
+  openPin();
+};
+function openPin(){
+  $("pinInput").value = ""; $("pinErr").textContent = "";
+  $("pinOverlay").classList.add("show");
+  setTimeout(()=> $("pinInput").focus(), 50);
 }
-
-// ============ التطبيق ============
-export default function App() {
-  const [loading, setLoading] = useState(true);
-  const [config, setConfig] = useState(null); // {pin, title, school}
-  const [students, setStudents] = useState([]); // [{id,name,section,points}]
-  const [photos, setPhotos] = useState({}); // {id: base64}
-  const [teacher, setTeacher] = useState(false);
-  const [view, setView] = useState("board"); // board | manage
-  const [sectionFilter, setSectionFilter] = useState("الكل");
-  const [search, setSearch] = useState("");
-  const [pinModal, setPinModal] = useState(false);
-  const [pinInput, setPinInput] = useState("");
-  const [pinError, setPinError] = useState("");
-  const [toast, setToast] = useState("");
-  const fileRefs = useRef({});
-
-  // ---- تحميل البيانات ----
-  useEffect(() => {
-    (async () => {
-      try {
-        const c = await window.storage.get("config", true);
-        setConfig(JSON.parse(c.value));
-      } catch {
-        setConfig(null);
-      }
-      try {
-        const s = await window.storage.get("students", true);
-        setStudents(JSON.parse(s.value));
-      } catch {
-        setStudents([]);
-      }
-      try {
-        const p = await window.storage.get("photos", true);
-        setPhotos(JSON.parse(p.value));
-      } catch {
-        setPhotos({});
-      }
-      setLoading(false);
-    })();
-  }, []);
-
-  const notify = (msg) => {
-    setToast(msg);
-    setTimeout(() => setToast(""), 2500);
-  };
-
-  const saveStudents = async (list) => {
-    setStudents(list);
-    try {
-      await window.storage.set("students", JSON.stringify(list), true);
-    } catch {
-      notify("تعذر الحفظ، حاول مجدداً");
+function closePin(){ $("pinOverlay").classList.remove("show"); }
+$("pinCancel").onclick = closePin;
+$("pinOverlay").onclick = e => { if (e.target === $("pinOverlay")) closePin(); };
+$("pinInput").addEventListener("keydown", e=>{ if(e.key==="Enter") $("pinOk").click(); });
+$("pinOk").onclick = ()=>{
+  const v = $("pinInput").value;
+  if (pinMode === "change"){
+    if (v.length < 4){ $("pinErr").textContent = "الرمز يجب أن يكون 4 أرقام على الأقل"; return; }
+    DATA.config.pin = v; saveDraft(); closePin(); toast("تم تغيير الرمز — نزّل نسخة للنشر ليصبح دائماً");
+    return;
+  }
+  if (v === DATA.config.pin){
+    teacher = true; closePin();
+    $("managePanel").style.display = "block";
+    $("btnTeacher").textContent = "👁️ عرض اللوحة";
+    $("btnTeacher").classList.add("on");
+    $("btnExit").style.display = "block";
+    /* استرجاع مسودة غير منشورة إن وجدت */
+    if (window.__draft && confirm("توجد مسودة تعديلات محفوظة على هذا الجهاز لم تُنشر بعد. استرجاعها؟")){
+      DATA = window.__draft;
     }
-  };
+    window.__draft = null;
+    render();
+  } else {
+    $("pinErr").textContent = "الرمز غير صحيح";
+  }
+};
 
-  const savePhotos = async (obj) => {
-    setPhotos(obj);
-    try {
-      await window.storage.set("photos", JSON.stringify(obj), true);
-    } catch {
-      notify("تعذر حفظ الصورة (قد يكون الحجم كبيراً)");
-    }
-  };
-
-  // ---- دخول المعلم ----
-  const handlePin = async () => {
-    setPinError("");
-    if (!config) {
-      // أول استخدام: تعيين الرمز
-      if (pinInput.length < 4) {
-        setPinError("الرمز يجب أن يكون 4 أرقام على الأقل");
-        return;
-      }
-      const c = { pin: pinInput, title: "فرسان العلوم", school: "مدرسة أبي بكر الرازي الابتدائية" };
-      try {
-        await window.storage.set("config", JSON.stringify(c), true);
-        setConfig(c);
-        setTeacher(true);
-        setPinModal(false);
-        setPinInput("");
-        setView("manage");
-        notify("تم تعيين رمز المعلم بنجاح");
-      } catch {
-        setPinError("تعذر الحفظ، حاول مجدداً");
-      }
-    } else if (pinInput === config.pin) {
-      setTeacher(true);
-      setPinModal(false);
-      setPinInput("");
-      setView("manage");
-    } else {
-      setPinError("الرمز غير صحيح");
-    }
-  };
-
-  // ---- إضافة طالب ----
-  const [newName, setNewName] = useState("");
-  const [newSection, setNewSection] = useState("4/أ");
-  const addStudent = () => {
-    const name = newName.trim();
-    if (!name) return;
-    const id = "s" + Date.now() + Math.floor(Math.random() * 1000);
-    saveStudents([...students, { id, name, section: newSection, points: 0 }]);
-    setNewName("");
-    notify(`تمت إضافة الفارس: ${name}`);
-  };
-
-  const changePoints = (id, delta) => {
-    saveStudents(
-      students.map((s) => (s.id === id ? { ...s, points: Math.max(0, s.points + delta) } : s))
-    );
-  };
-
-  const removeStudent = (id) => {
-    const st = students.find((s) => s.id === id);
-    if (!window.confirm(`حذف الفارس "${st?.name}" نهائياً؟`)) return;
-    saveStudents(students.filter((s) => s.id !== id));
-    const p = { ...photos };
-    delete p[id];
-    savePhotos(p);
-  };
-
-  // ---- رفع صورة (ضغط تلقائي) ----
-  const uploadPhoto = (id, file) => {
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const S = 160;
-        canvas.width = S;
-        canvas.height = S;
-        const ctx = canvas.getContext("2d");
-        const min = Math.min(img.width, img.height);
-        ctx.drawImage(img, (img.width - min) / 2, (img.height - min) / 2, min, min, 0, 0, S, S);
-        const data = canvas.toDataURL("image/jpeg", 0.65);
-        savePhotos({ ...photos, [id]: data });
-        notify("تم رفع الصورة");
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  };
-
-  // ---- البيانات المعروضة ----
-  const sections = ["الكل", ...Array.from(new Set(students.map((s) => s.section)))];
-  const sorted = [...students].sort((a, b) => b.points - a.points);
-  const filtered = sorted.filter(
-    (s) =>
-      (sectionFilter === "الكل" || s.section === sectionFilter) &&
-      s.name.includes(search.trim())
+/* ═══ التصدير: تنزيل نسخة HTML محدثة للنشر ═══ */
+$("btnExport").onclick = ()=>{
+  const json = JSON.stringify(DATA).replace(/</g, "\\u003c");
+  const out = PAGE_SOURCE.replace(
+    /(<script type="application\/json" id="app-data">)[\s\S]*?(<\/script>)/,
+    (_, a, b) => a + "\n" + json + "\n" + b
   );
-  const top3 = sorted.slice(0, 3);
+  const blob = new Blob([out], {type: "text/html;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "index.html";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=> URL.revokeObjectURL(a.href), 3000);
+  toast("تم التنزيل — ارفع index.html على GitHub");
+};
 
-  if (loading)
-    return (
-      <div dir="rtl" style={{ minHeight: "100vh", background: C.sand, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", color: C.navy, fontSize: 20 }}>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>🛡️</div>
-          جارٍ تجهيز ساحة الفرسان...
-        </div>
-      </div>
-    );
+/* ═══ بحث ═══ */
+$("search").addEventListener("input", render);
 
-  return (
-    <div dir="rtl" style={{ minHeight: "100vh", background: C.sand, fontFamily: "'Tajawal', sans-serif", color: C.ink }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Tajawal:wght@400;500;700;800&display=swap');
-        * { box-sizing: border-box; }
-        button { font-family: 'Tajawal', sans-serif; cursor: pointer; }
-        input, select { font-family: 'Tajawal', sans-serif; }
-        input:focus, select:focus, button:focus-visible { outline: 3px solid ${C.gold}; outline-offset: 2px; }
-      `}</style>
-
-      {/* ============ الترويسة ============ */}
-      <header style={{ background: `linear-gradient(135deg, ${C.navyDeep}, ${C.navy} 60%, #143A5C)`, color: "#fff", padding: "28px 20px 22px", textAlign: "center", position: "relative", borderBottom: `5px solid ${C.gold}` }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
-          <Shield color={C.gold} size={54} icon="⚔️" />
-          <div>
-            <h1 style={{ fontFamily: "'Aref Ruqaa', serif", fontSize: "clamp(30px, 6vw, 44px)", margin: 0, color: C.goldLight, letterSpacing: 1 }}>
-              فرسان العلوم
-            </h1>
-            <div style={{ fontSize: 14, color: "#B9CBDC", fontWeight: 500 }}>
-              الصف الرابع الابتدائي • {config?.school || "مدرسة أبي بكر الرازي الابتدائية"}
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={() => (teacher ? setView(view === "manage" ? "board" : "manage") : setPinModal(true))}
-          style={{ position: "absolute", top: 14, left: 14, background: teacher ? C.teal : "rgba(255,255,255,0.12)", color: "#fff", border: `1px solid ${teacher ? C.teal : "rgba(255,255,255,0.35)"}`, borderRadius: 10, padding: "8px 14px", fontSize: 13, fontWeight: 700 }}
-        >
-          {teacher ? (view === "manage" ? "👁️ عرض اللوحة" : "🔧 لوحة المعلم") : "🔑 دخول المعلم"}
-        </button>
-        {teacher && (
-          <button
-            onClick={() => { setTeacher(false); setView("board"); }}
-            style={{ position: "absolute", top: 14, right: 14, background: "rgba(255,255,255,0.12)", color: "#fff", border: "1px solid rgba(255,255,255,0.35)", borderRadius: 10, padding: "8px 14px", fontSize: 13, fontWeight: 700 }}
-          >
-            خروج
-          </button>
-        )}
-      </header>
-
-      <main style={{ maxWidth: 980, margin: "0 auto", padding: "22px 14px 60px" }}>
-        {/* ============ لوحة المعلم ============ */}
-        {teacher && view === "manage" && (
-          <section style={{ background: "#fff", borderRadius: 16, border: `1px solid #E3DED2`, boxShadow: "0 4px 18px rgba(15,42,67,0.07)", padding: 18, marginBottom: 26 }}>
-            <h2 style={{ margin: "0 0 14px", fontSize: 20, color: C.navy, borderBottom: `3px solid ${C.goldLight}`, paddingBottom: 8 }}>
-              🔧 إدارة الفرسان
-            </h2>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 18 }}>
-              <input
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && addStudent()}
-                placeholder="اسم الطالب كاملاً..."
-                style={{ flex: "1 1 220px", padding: "10px 12px", borderRadius: 10, border: `1.5px solid #D8D2C4`, fontSize: 15 }}
-              />
-              <select value={newSection} onChange={(e) => setNewSection(e.target.value)} style={{ padding: "10px 12px", borderRadius: 10, border: `1.5px solid #D8D2C4`, fontSize: 15 }}>
-                <option>4/أ</option>
-                <option>4/ب</option>
-                <option>4/ج</option>
-              </select>
-              <button onClick={addStudent} style={{ background: C.teal, color: "#fff", border: "none", borderRadius: 10, padding: "10px 20px", fontSize: 15, fontWeight: 700 }}>
-                + إضافة فارس
-              </button>
-            </div>
-
-            {students.length === 0 && (
-              <div style={{ textAlign: "center", color: C.silver, padding: 22, fontSize: 15 }}>
-                لا يوجد فرسان بعد — أضف أول طالب من الحقل أعلاه.
-              </div>
-            )}
-
-            <div style={{ display: "grid", gap: 8 }}>
-              {sorted.map((s) => (
-                <div key={s.id} style={{ display: "flex", alignItems: "center", gap: 10, background: C.sand, borderRadius: 12, padding: "8px 10px", flexWrap: "wrap" }}>
-                  <div style={{ position: "relative" }}>
-                    <Avatar photo={photos[s.id]} name={s.name} size={46} />
-                    <button
-                      title="رفع صورة الطالب"
-                      onClick={() => fileRefs.current[s.id]?.click()}
-                      style={{ position: "absolute", bottom: -4, left: -4, width: 24, height: 24, borderRadius: "50%", background: C.gold, border: "2px solid #fff", fontSize: 12, display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
-                    >
-                      📷
-                    </button>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      ref={(el) => (fileRefs.current[s.id] = el)}
-                      onChange={(e) => uploadPhoto(s.id, e.target.files[0])}
-                      style={{ display: "none" }}
-                    />
-                  </div>
-                  <div style={{ flex: "1 1 140px", minWidth: 120 }}>
-                    <div style={{ fontWeight: 700, fontSize: 15 }}>{s.name}</div>
-                    <div style={{ fontSize: 12, color: C.silver }}>{s.section} • {rankOf(s.points).name}</div>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <button onClick={() => changePoints(s.id, -5)} style={{ width: 34, height: 34, borderRadius: 9, border: `1.5px solid #D8D2C4`, background: "#fff", fontWeight: 800, color: C.red }}>−5</button>
-                    <div style={{ minWidth: 52, textAlign: "center", fontWeight: 800, fontSize: 17, color: C.navy }}>{s.points}</div>
-                    <button onClick={() => changePoints(s.id, 5)} style={{ width: 34, height: 34, borderRadius: 9, border: "none", background: C.teal, color: "#fff", fontWeight: 800 }}>+5</button>
-                    <button onClick={() => changePoints(s.id, 10)} style={{ height: 34, borderRadius: 9, border: "none", background: C.navy, color: "#fff", fontWeight: 800, padding: "0 10px" }}>+10</button>
-                  </div>
-                  <button onClick={() => removeStudent(s.id)} title="حذف" style={{ background: "none", border: "none", fontSize: 17, color: C.red }}>🗑️</button>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ============ منصة التتويج ============ */}
-        {top3.length > 0 && view !== "manage" && (
-          <section style={{ marginBottom: 26 }}>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-end", gap: 10 }}>
-              {[top3[1], top3[0], top3[2]].filter(Boolean).map((s, i) => {
-                const place = s === top3[0] ? 1 : s === top3[1] ? 2 : 3;
-                const h = place === 1 ? 150 : place === 2 ? 118 : 100;
-                const medal = place === 1 ? "👑" : place === 2 ? "🥈" : "🥉";
-                return (
-                  <div key={s.id} style={{ textAlign: "center", width: "clamp(92px, 28vw, 150px)" }}>
-                    <Avatar photo={photos[s.id]} name={s.name} size={place === 1 ? 72 : 58} ring={place === 1 ? C.gold : C.silver} />
-                    <div style={{ fontSize: 22, marginTop: 4 }}>{medal}</div>
-                    <div style={{ fontWeight: 800, fontSize: 13, color: C.navy, lineHeight: 1.3, minHeight: 34 }}>{s.name}</div>
-                    <div style={{ background: place === 1 ? `linear-gradient(180deg, ${C.gold}, #A8861D)` : `linear-gradient(180deg, ${C.navy}, ${C.navyDeep})`, height: h, borderRadius: "12px 12px 0 0", color: "#fff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: 6 }}>
-                      <div style={{ fontSize: 26, fontWeight: 800 }}>{s.points}</div>
-                      <div style={{ fontSize: 11, opacity: 0.85 }}>نقطة</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
-
-        {/* ============ لوحة الشرف ============ */}
-        {view !== "manage" && (
-          <section style={{ background: "#fff", borderRadius: 16, border: `1px solid #E3DED2`, boxShadow: "0 4px 18px rgba(15,42,67,0.07)", padding: 18 }}>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", marginBottom: 14 }}>
-              <h2 style={{ margin: 0, fontSize: 20, color: C.navy, flex: "1 1 auto" }}>🏅 لوحة الشرف</h2>
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="🔍 ابحث عن اسم الفارس..."
-                style={{ flex: "1 1 180px", padding: "9px 12px", borderRadius: 10, border: `1.5px solid #D8D2C4`, fontSize: 14 }}
-              />
-              <div style={{ display: "flex", gap: 6 }}>
-                {sections.map((sec) => (
-                  <button
-                    key={sec}
-                    onClick={() => setSectionFilter(sec)}
-                    style={{ padding: "8px 13px", borderRadius: 999, border: "none", fontSize: 13, fontWeight: 700, background: sectionFilter === sec ? C.navy : C.tealLight, color: sectionFilter === sec ? "#fff" : C.teal }}
-                  >
-                    {sec}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {filtered.length === 0 ? (
-              <div style={{ textAlign: "center", color: C.silver, padding: 30, fontSize: 15 }}>
-                {students.length === 0 ? "ستظهر أسماء الفرسان هنا قريباً بإذن الله 🛡️" : "لا توجد نتائج مطابقة للبحث."}
-              </div>
-            ) : (
-              <div style={{ display: "grid", gap: 8 }}>
-                {filtered.map((s) => {
-                  const r = rankOf(s.points);
-                  const place = sorted.indexOf(s) + 1;
-                  return (
-                    <div key={s.id} style={{ display: "flex", alignItems: "center", gap: 12, background: r.bg, borderRadius: 12, padding: "9px 12px", borderRight: `5px solid ${r.color}` }}>
-                      <div style={{ width: 30, textAlign: "center", fontWeight: 800, fontSize: 15, color: C.silver }}>{place}</div>
-                      <Avatar photo={photos[s.id]} name={s.name} size={48} ring={r.color} />
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontWeight: 800, fontSize: 15.5, color: C.ink }}>{s.name}</div>
-                        <div style={{ fontSize: 12.5, color: r.color, fontWeight: 700 }}>{r.icon} {r.name} • {s.section}</div>
-                      </div>
-                      <div style={{ textAlign: "center" }}>
-                        <div style={{ fontWeight: 800, fontSize: 19, color: C.navy }}>{s.points}</div>
-                        <div style={{ fontSize: 10.5, color: C.silver }}>نقطة</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {/* مفتاح الرتب */}
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center", marginTop: 18, paddingTop: 14, borderTop: "1px dashed #D8D2C4" }}>
-              {RANKS.slice().reverse().map((r) => (
-                <div key={r.name} style={{ fontSize: 12.5, fontWeight: 700, color: r.color, background: r.bg, borderRadius: 999, padding: "5px 12px" }}>
-                  {r.icon} {r.name} ({r.min}+)
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        <footer style={{ textAlign: "center", marginTop: 26, fontSize: 12.5, color: C.silver }}>
-          منصة فرسان العلوم • إعداد المعلم: حمدان عمار المحياوي • العام الدراسي 1448هـ
-        </footer>
-      </main>
-
-      {/* ============ نافذة الرمز ============ */}
-      {pinModal && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(10,30,49,0.6)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, zIndex: 50 }} onClick={() => setPinModal(false)}>
-          <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 18, padding: 26, width: "100%", maxWidth: 360, textAlign: "center", borderTop: `5px solid ${C.gold}` }}>
-            <div style={{ fontSize: 40 }}>🔑</div>
-            <h3 style={{ margin: "8px 0 4px", color: C.navy, fontSize: 19 }}>
-              {config ? "دخول المعلم" : "تعيين رمز المعلم (أول مرة)"}
-            </h3>
-            <p style={{ fontSize: 13, color: C.silver, margin: "0 0 14px" }}>
-              {config ? "أدخل الرمز السري للتعديل على المنصة" : "اختر رمزاً سرياً (4 أرقام أو أكثر) — احفظه جيداً"}
-            </p>
-            <input
-              type="password"
-              inputMode="numeric"
-              value={pinInput}
-              onChange={(e) => setPinInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handlePin()}
-              placeholder="• • • •"
-              autoFocus
-              style={{ width: "100%", padding: "12px", borderRadius: 10, border: `2px solid ${pinError ? C.red : "#D8D2C4"}`, fontSize: 20, textAlign: "center", letterSpacing: 6 }}
-            />
-            {pinError && <div style={{ color: C.red, fontSize: 13, marginTop: 8, fontWeight: 700 }}>{pinError}</div>}
-            <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
-              <button onClick={handlePin} style={{ flex: 1, background: C.teal, color: "#fff", border: "none", borderRadius: 10, padding: "11px", fontSize: 15, fontWeight: 800 }}>
-                {config ? "دخول" : "تعيين الرمز"}
-              </button>
-              <button onClick={() => { setPinModal(false); setPinInput(""); setPinError(""); }} style={{ flex: 1, background: "#EEE9DD", color: C.ink, border: "none", borderRadius: 10, padding: "11px", fontSize: 15, fontWeight: 700 }}>
-                إلغاء
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ============ إشعار ============ */}
-      {toast && (
-        <div style={{ position: "fixed", bottom: 20, right: "50%", transform: "translateX(50%)", background: C.navy, color: "#fff", borderRadius: 999, padding: "10px 22px", fontSize: 14, fontWeight: 700, boxShadow: "0 6px 20px rgba(0,0,0,0.25)", zIndex: 60 }}>
-          {toast}
-        </div>
-      )}
-    </div>
-  );
-}
+render();
+</script>
+</body>
+</html>
