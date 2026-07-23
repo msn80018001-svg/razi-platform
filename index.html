@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head>
+<html lang="ar" dir="rtl">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>فرسان العلوم — الصف الرابع</title>
-<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --navy:#0F2A43; --navy-deep:#0A1E31; --teal:#0E7C6B; --teal-light:#E6F4F1;
@@ -17,15 +18,15 @@
   input:focus,select:focus,button:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
 
   header{background:linear-gradient(135deg,var(--navy-deep),var(--navy) 60%,#143A5C); color:#fff;
-    padding:28px 20px 22px; text-align:center; position:relative; border-bottom:5px solid var(--gold);}
+    padding:22px 16px 18px; text-align:center; border-bottom:5px solid var(--gold);}
   .head-inner{display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;}
   h1{font-family:'Aref Ruqaa',serif; font-size:clamp(30px,6vw,44px); color:var(--gold-light); letter-spacing:1px;}
   .subtitle{font-size:14px; color:#B9CBDC; font-weight:500;}
-  .btn-teacher{position:absolute; top:14px; left:14px; background:rgba(255,255,255,.12); color:#fff;
-    border:1px solid rgba(255,255,255,.35); border-radius:10px; padding:8px 14px; font-size:13px; font-weight:700;}
-  .btn-teacher.on{background:var(--teal); border-color:var(--teal);}
-  .btn-exit{position:absolute; top:14px; right:14px; background:rgba(255,255,255,.12); color:#fff;
-    border:1px solid rgba(255,255,255,.35); border-radius:10px; padding:8px 14px; font-size:13px; font-weight:700;}
+  .head-btns{display:flex; justify-content:center; gap:8px; margin-top:14px; flex-wrap:wrap;}
+  .hbtn{background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.35);
+    border-radius:10px; padding:8px 16px; font-size:13.5px; font-weight:700;}
+  .hbtn.on{background:var(--teal); border-color:var(--teal);}
+  #netState{font-size:11.5px; color:#8FB3A9; margin-top:8px; min-height:15px;}
 
   main{max-width:980px; margin:0 auto; padding:22px 14px 60px;}
   .card{background:#fff; border-radius:16px; border:1px solid #E3DED2; box-shadow:0 4px 18px rgba(15,42,67,.07); padding:18px; margin-bottom:26px;}
@@ -36,7 +37,6 @@
     display:flex; align-items:center; justify-content:center; flex-shrink:0;}
   .avatar img{width:100%; height:100%; object-fit:cover;}
 
-  /* منصة التتويج */
   .podium{display:flex; justify-content:center; align-items:flex-end; gap:10px; margin-bottom:26px;}
   .pod{text-align:center; width:clamp(92px,28vw,150px); display:flex; flex-direction:column; align-items:center;}
   .pod-name{font-weight:800; font-size:13px; color:var(--navy); line-height:1.3; min-height:34px;}
@@ -45,7 +45,6 @@
   .pod-bar .pts{font-size:26px; font-weight:800;}
   .pod-bar .lbl{font-size:11px; opacity:.85;}
 
-  /* لوحة الشرف */
   .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}
   .toolbar input{flex:1 1 180px; padding:9px 12px; border-radius:10px; border:1.5px solid #D8D2C4; font-size:14px;}
   .chip{padding:8px 13px; border-radius:999px; font-size:13px; font-weight:700; background:var(--teal-light); color:var(--teal);}
@@ -62,26 +61,26 @@
   .legend span{font-size:12.5px; font-weight:700; border-radius:999px; padding:5px 12px;}
   .empty{text-align:center; color:var(--silver); padding:30px; font-size:15px;}
 
-  /* لوحة المعلم */
   .addbar{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
   .addbar input{flex:1 1 220px; padding:10px 12px; border-radius:10px; border:1.5px solid #D8D2C4;}
   .addbar select{padding:10px 12px; border-radius:10px; border:1.5px solid #D8D2C4;}
   .btn{border-radius:10px; padding:10px 20px; font-size:15px; font-weight:700; color:#fff;}
   .btn-teal{background:var(--teal);}
   .btn-navy{background:var(--navy);}
-  .btn-gold{background:var(--gold); color:var(--navy-deep);}
   .mrow{display:flex; align-items:center; gap:10px; background:var(--sand); border-radius:12px; padding:8px 10px; flex-wrap:wrap; margin-bottom:8px;}
   .photo-wrap{position:relative;}
   .cam{position:absolute; bottom:-4px; left:-4px; width:24px; height:24px; border-radius:50%;
     background:var(--gold); border:2px solid #fff; font-size:12px; display:flex; align-items:center; justify-content:center; padding:0;}
+  .delph{position:absolute; top:-6px; left:-6px; width:22px; height:22px; border-radius:50%;
+    background:#FDECEC; border:2px solid #fff; color:var(--red); font-size:10px; font-weight:900;
+    display:flex; align-items:center; justify-content:center; padding:0;}
   .ptbtn{width:34px; height:34px; border-radius:9px; font-weight:800; font-size:14px;}
   .minus{border:1.5px solid #D8D2C4; background:#fff; color:var(--red);}
   .plus{background:var(--teal); color:#fff;}
   .plus10{background:var(--navy); color:#fff; width:auto; padding:0 10px; height:34px; border-radius:9px; font-weight:800;}
   .del{background:none; font-size:17px; color:var(--red);}
-  .pubbar{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px dashed #D8D2C4;}
+  .pinbar{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px dashed #D8D2C4;}
 
-  /* نافذة الرمز */
   .overlay{position:fixed; inset:0; background:rgba(10,30,49,.6); display:none; align-items:center; justify-content:center; padding:16px; z-index:50;}
   .overlay.show{display:flex;}
   .modal{background:#fff; border-radius:18px; padding:26px; width:100%; max-width:360px; text-align:center; border-top:5px solid var(--gold);}
@@ -93,33 +92,28 @@
   #toast{position:fixed; bottom:20px; right:50%; transform:translateX(50%); background:var(--navy); color:#fff;
     border-radius:999px; padding:10px 22px; font-size:14px; font-weight:700; box-shadow:0 6px 20px rgba(0,0,0,.25);
     z-index:60; display:none;}
-  footer{text-align:center; margin-top:26px; font-size:12.5px; color:var(--silver);}
-  @media (prefers-reduced-motion: no-preference){
-    .row, .mrow{transition:transform .15s;}
-  }
+  footer{text-align:center; margin-top:26px; font-size:12.5px; color:var(--silver); line-height:1.9;}
 </style>
 </head>
 <body>
 
-<!-- ═══════════ البيانات المضمّنة (لا تعدّل يدوياً) ═══════════ -->
-<script type="application/json" id="app-data">
-{"config":{"pin":"1234","title":"فرسان العلوم","school":"مدرسة أبي بكر الرازي الابتدائية","sections":["4/أ","4/ب","4/ج"]},"students":[{"id":"s1784836077461459","name":"محمد احمد المطيري","section":"4/أ","points":0}],"photos":{}}
-</script>
-
 <header>
   <div class="head-inner">
     <svg viewBox="0 0 100 115" width="54" height="62" aria-hidden="true">
-      <path d="M50 4 L92 18 V58 C92 84 74 102 50 111 C26 102 8 84 8 58 V18 Z" fill="#C9A227" stroke="#0A1E31" stroke-width="3"></path>
-      <path d="M50 14 L82 25 V57 C82 77 68 92 50 100 C32 92 18 77 18 57 V25 Z" fill="rgba(255,255,255,.22)"></path>
+      <path d="M50 4 L92 18 V58 C92 84 74 102 50 111 C26 102 8 84 8 58 V18 Z" fill="#C9A227" stroke="#0A1E31" stroke-width="3"/>
+      <path d="M50 14 L82 25 V57 C82 77 68 92 50 100 C32 92 18 77 18 57 V25 Z" fill="rgba(255,255,255,.22)"/>
       <text x="50" y="70" text-anchor="middle" font-size="38">⚔️</text>
     </svg>
     <div>
       <h1>فرسان العلوم</h1>
-      <div class="subtitle" id="subtitle">الصف الرابع الابتدائي • مدرسة أبي بكر الرازي الابتدائية</div>
+      <div class="subtitle">الصف الرابع الابتدائي • مدرسة أبي بكر الرازي الابتدائية بينبع</div>
     </div>
   </div>
-  <button class="btn-teacher" id="btnTeacher">🔑 دخول المعلم</button>
-  <button class="btn-exit" id="btnExit" style="display:none">خروج</button>
+  <div class="head-btns">
+    <button class="hbtn" id="btnTeacher">🔑 دخول المعلم</button>
+    <button class="hbtn" id="btnExit" style="display:none">خروج</button>
+  </div>
+  <div id="netState">⏳ جارٍ الاتصال بقاعدة البيانات...</div>
 </header>
 
 <main>
@@ -127,36 +121,38 @@
     <h2 class="h2-line">🔧 إدارة الفرسان</h2>
     <div class="addbar">
       <input id="newName" placeholder="اسم الطالب كاملاً...">
-      <select id="newSection"></select>
+      <select id="newSection">
+        <option>4/أ</option><option>4/ب</option><option>4/ج</option>
+      </select>
       <button class="btn btn-teal" id="btnAdd">+ إضافة فارس</button>
     </div>
     <div id="manageList"></div>
-    <div class="pubbar">
-      <button class="btn btn-gold" id="btnExport">⬇️ تنزيل نسخة للنشر</button>
+    <div class="pinbar">
       <button class="btn btn-navy" id="btnPin">🔒 تغيير الرمز</button>
     </div>
-    <p style="font-size:12.5px; color:var(--silver); margin-top:10px; line-height:1.7">
-      بعد الانتهاء من التعديل اضغط "تنزيل نسخة للنشر" ثم ارفع الملف الجديد على GitHub بدل القديم — هكذا يشاهد الجميع آخر النتائج.
-      تعديلاتك محفوظة أيضاً على هذا الجهاز كمسودة حتى لو أغلقت الصفحة.
+    <p style="font-size:12.5px; color:var(--silver); margin-top:10px; line-height:1.8">
+      ✨ كل تعديل يُحفظ فوراً في قاعدة البيانات ويظهر مباشرة لجميع الطلاب وأولياء الأمور — لا حاجة لتنزيل أو رفع أي ملفات.
     </p>
   </section>
 
   <section id="podium" class="podium"></section>
 
-  <section class="card" id="boardCard">
+  <section class="card">
     <div class="toolbar">
       <h2 style="flex:1 1 auto; margin:0">🏅 لوحة الشرف</h2>
       <input id="search" placeholder="🔍 ابحث عن اسم الفارس...">
       <div id="chips" style="display:flex; gap:6px; flex-wrap:wrap"></div>
     </div>
-    <div id="board"></div>
+    <div id="board"><div class="empty">⏳ جارٍ تحميل الفرسان...</div></div>
     <div class="legend" id="legend"></div>
   </section>
 
-  <footer>منصة فرسان العلوم • إعداد المعلم: حمدان عمار المحياوي • العام الدراسي 1448هـ</footer>
+  <footer>
+    منصة فرسان العلوم — الصف الرابع الابتدائي • مدرسة أبي بكر الرازي الابتدائية بينبع<br>
+    إعداد المعلم: <b style="color:var(--gold)">أ. حمدان عمار المحياوي</b> • العام الدراسي 1448هـ
+  </footer>
 </main>
 
-<!-- نافذة الرمز -->
 <div class="overlay" id="pinOverlay">
   <div class="modal">
     <div style="font-size:40px">🔑</div>
@@ -165,7 +161,7 @@
     <input type="password" inputmode="numeric" id="pinInput" placeholder="• • • •">
     <div class="err" id="pinErr"></div>
     <div class="acts">
-      <button class="btn-teal" id="pinOk" style="background:var(--teal); color:#fff">دخول</button>
+      <button id="pinOk" style="background:var(--teal); color:#fff">دخول</button>
       <button id="pinCancel" style="background:#EEE9DD; color:var(--ink)">إلغاء</button>
     </div>
   </div>
@@ -174,11 +170,24 @@
 <div id="toast"></div>
 <input type="file" accept="image/*" id="photoFile" style="display:none">
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
-/* ═══ التقاط نص الصفحة الأصلي قبل أي عرض (لأجل التصدير) ═══ */
-const PAGE_SOURCE = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+/* ═══ ربط Firebase — نفس قاعدة بيانات منصة التميز، قسم مستقل "forsan" ═══ */
+const firebaseConfig = {
+  apiKey: "AIzaSyBfYecxpWH-0TMCRAWGQMsIrj4ImhcEUAk",
+  authDomain: "razi-platform.firebaseapp.com",
+  databaseURL: "https://razi-platform-default-rtdb.firebaseio.com",
+  projectId: "razi-platform",
+  storageBucket: "razi-platform.firebasestorage.app",
+  messagingSenderId: "802206384009",
+  appId: "1:802206384009:web:5979841b717e4598afab58"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const ROOT = "forsan";
 
-/* ═══ تحميل البيانات ═══ */
+/* ═══ الرتب ═══ */
 const RANKS = [
   {min:300, name:"قائد الفرسان", color:"#C9A227", bg:"#FFF8E1", icon:"👑"},
   {min:200, name:"فارس ذهبي",   color:"#B8860B", bg:"#FDF3D7", icon:"🥇"},
@@ -187,51 +196,53 @@ const RANKS = [
 ];
 const rankOf = p => RANKS.find(r => p >= r.min) || RANKS[RANKS.length-1];
 
-let DATA = JSON.parse(document.getElementById("app-data").textContent);
+let PIN = "1234";
+let STUDENTS = {};   // {id: {id,name,section,points,img?}}
 let teacher = false;
 let sectionFilter = "الكل";
 let photoTargetId = null;
+let connected = false;
 
-/* مسودة محلية على جهاز المعلم */
-const DRAFT_KEY = "forsan-draft";
-try {
-  const draft = localStorage.getItem(DRAFT_KEY);
-  if (draft) {
-    const d = JSON.parse(draft);
-    if (JSON.stringify(d) !== JSON.stringify(DATA)) {
-      // تُستخدم المسودة فقط بعد دخول المعلم وتأكيده
-      window.__draft = d;
-    }
-  }
-} catch(e){}
-
-function saveDraft(){
-  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(DATA)); } catch(e){}
-}
-
-/* ═══ أدوات ═══ */
 const $ = id => document.getElementById(id);
 function toast(msg){
   const t = $("toast"); t.textContent = msg; t.style.display = "block";
   clearTimeout(t._h); t._h = setTimeout(()=> t.style.display="none", 2500);
 }
-function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function esc(s){ return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+/* ═══ الاستماع المباشر: أي تحديث يظهر للجميع فوراً ═══ */
+db.ref(ROOT).on("value", snap => {
+  const val = snap.val();
+  if (!val) {
+    db.ref(ROOT).set({ pin: PIN, students: {} });
+    return;
+  }
+  if (val.pin) PIN = String(val.pin);
+  STUDENTS = val.students || {};
+  if (!connected){
+    connected = true;
+    $("netState").textContent = "🟢 متصل — التحديثات تظهر للجميع مباشرة";
+  }
+  render();
+}, err => {
+  console.error(err);
+  $("netState").textContent = "⚠️ تعذر الاتصال — تحقق من الإنترنت";
+});
+
+/* ═══ العرض ═══ */
+function list(){ return Object.values(STUDENTS); }
+function sorted(){ return list().sort((a,b)=> b.points - a.points); }
 function avatarHTML(st, size, ring){
-  const ph = DATA.photos[st.id];
   return `<div class="avatar" style="width:${size}px;height:${size}px;border-color:${ring}">
-    ${ph ? `<img src="${ph}" alt="${esc(st.name)}">` : `<span style="font-size:${size*.45}px">🛡️</span>`}
+    ${st.img ? `<img src="${st.img}" alt="${esc(st.name)}">` : `<span style="font-size:${size*.45}px">🛡️</span>`}
   </div>`;
 }
 
-/* ═══ العرض ═══ */
-function sortedStudents(){ return [...DATA.students].sort((a,b)=> b.points - a.points); }
-
 function render(){
-  $("subtitle").textContent = "الصف الرابع الابتدائي • " + DATA.config.school;
-  const sorted = sortedStudents();
+  const srt = sorted();
 
   /* منصة التتويج */
-  const top3 = sorted.slice(0,3);
+  const top3 = srt.slice(0,3);
   const pod = $("podium");
   if (top3.length === 0 || (teacher && $("managePanel").style.display !== "none")) {
     pod.innerHTML = "";
@@ -255,7 +266,7 @@ function render(){
   }
 
   /* الفلاتر */
-  const secs = ["الكل", ...new Set(DATA.students.map(s=>s.section))];
+  const secs = ["الكل", ...new Set(list().map(s=>s.section))];
   $("chips").innerHTML = secs.map(sec=>
     `<button class="chip ${sec===sectionFilter?'on':''}" data-sec="${esc(sec)}">${esc(sec)}</button>`).join("");
   $("chips").querySelectorAll("button").forEach(b=>
@@ -263,16 +274,18 @@ function render(){
 
   /* لوحة الشرف */
   const q = $("search").value.trim();
-  const filtered = sorted.filter(s =>
+  const filtered = srt.filter(s =>
     (sectionFilter==="الكل" || s.section===sectionFilter) && s.name.includes(q));
   const board = $("board");
-  if (filtered.length === 0) {
-    board.innerHTML = `<div class="empty">${DATA.students.length===0 ?
+  if (!connected) {
+    board.innerHTML = `<div class="empty">⏳ جارٍ تحميل الفرسان...</div>`;
+  } else if (filtered.length === 0) {
+    board.innerHTML = `<div class="empty">${list().length===0 ?
       "ستظهر أسماء الفرسان هنا قريباً بإذن الله 🛡️" : "لا توجد نتائج مطابقة للبحث."}</div>`;
   } else {
     board.innerHTML = filtered.map(s=>{
       const r = rankOf(s.points);
-      const place = sorted.indexOf(s)+1;
+      const place = srt.indexOf(s)+1;
       return `<div class="row" style="background:${r.bg};border-right:5px solid ${r.color}">
         <div class="place">${place}</div>
         ${avatarHTML(s, 48, r.color)}
@@ -285,22 +298,19 @@ function render(){
     }).join("");
   }
 
-  /* مفتاح الرتب */
   $("legend").innerHTML = RANKS.slice().reverse().map(r=>
     `<span style="color:${r.color};background:${r.bg}">${r.icon} ${r.name} (${r.min}+)</span>`).join("");
 
-  /* لوحة الإدارة */
   if (teacher) renderManage();
 }
 
 function renderManage(){
-  const sel = $("newSection");
-  sel.innerHTML = DATA.config.sections.map(s=>`<option>${esc(s)}</option>`).join("");
-  $("manageList").innerHTML = sortedStudents().map(s=>`
+  $("manageList").innerHTML = sorted().map(s=>`
     <div class="mrow">
       <div class="photo-wrap">
         ${avatarHTML(s, 46, "#0E7C6B")}
         <button class="cam" title="رفع صورة الطالب" data-photo="${s.id}">📷</button>
+        ${s.img ? `<button class="delph" title="حذف الصورة" data-delph="${s.id}">✖</button>` : ""}
       </div>
       <div style="flex:1 1 140px;min-width:120px">
         <div style="font-weight:700;font-size:15px">${esc(s.name)}</div>
@@ -317,20 +327,30 @@ function renderManage(){
 
   $("manageList").querySelectorAll("[data-pt]").forEach(b=> b.onclick = ()=>{
     const [id, d] = b.dataset.pt.split("|");
-    const st = DATA.students.find(x=>x.id===id);
-    if (st){ st.points = Math.max(0, st.points + parseInt(d)); saveDraft(); render(); }
+    const st = STUDENTS[id];
+    if (st){
+      const pts = Math.max(0, (st.points||0) + parseInt(d));
+      db.ref(`${ROOT}/students/${id}/points`).set(pts)
+        .catch(()=> toast("⚠️ تعذر الحفظ — تحقق من الإنترنت"));
+    }
   });
   $("manageList").querySelectorAll("[data-del]").forEach(b=> b.onclick = ()=>{
-    const st = DATA.students.find(x=>x.id===b.dataset.del);
+    const st = STUDENTS[b.dataset.del];
     if (st && confirm(`حذف الفارس "${st.name}" نهائياً؟`)){
-      DATA.students = DATA.students.filter(x=>x.id!==st.id);
-      delete DATA.photos[st.id];
-      saveDraft(); render();
+      db.ref(`${ROOT}/students/${st.id}`).remove()
+        .then(()=> toast("تم حذف الفارس"))
+        .catch(()=> toast("⚠️ تعذر الحذف — تحقق من الإنترنت"));
     }
   });
   $("manageList").querySelectorAll("[data-photo]").forEach(b=> b.onclick = ()=>{
     photoTargetId = b.dataset.photo;
     $("photoFile").click();
+  });
+  $("manageList").querySelectorAll("[data-delph]").forEach(b=> b.onclick = ()=>{
+    if (confirm("حذف صورة هذا الفارس؟")){
+      db.ref(`${ROOT}/students/${b.dataset.delph}/img`).remove()
+        .catch(()=> toast("⚠️ تعذر الحذف"));
+    }
   });
 }
 
@@ -347,9 +367,11 @@ $("photoFile").onchange = e => {
       const ctx = cv.getContext("2d");
       const m = Math.min(img.width, img.height);
       ctx.drawImage(img, (img.width-m)/2, (img.height-m)/2, m, m, 0, 0, S, S);
-      DATA.photos[photoTargetId] = cv.toDataURL("image/jpeg", .65);
+      const data = cv.toDataURL("image/jpeg", .65);
+      db.ref(`${ROOT}/students/${photoTargetId}/img`).set(data)
+        .then(()=> toast("تم رفع الصورة ✓"))
+        .catch(()=> toast("⚠️ تعذر رفع الصورة"));
       photoTargetId = null;
-      saveDraft(); render(); toast("تم رفع الصورة ✓");
     };
     img.src = ev.target.result;
   };
@@ -363,16 +385,17 @@ $("newName").addEventListener("keydown", e=>{ if(e.key==="Enter") addStudent(); 
 function addStudent(){
   const name = $("newName").value.trim();
   if (!name) return;
-  DATA.students.push({
-    id: "s"+Date.now()+Math.floor(Math.random()*1000),
-    name, section: $("newSection").value, points: 0
-  });
+  const id = "s"+Date.now()+Math.floor(Math.random()*1000);
+  db.ref(`${ROOT}/students/${id}`).set({
+    id, name, section: $("newSection").value, points: 0
+  })
+  .then(()=> toast("تمت إضافة الفارس: " + name))
+  .catch(()=> toast("⚠️ تعذر الحفظ — تحقق من الإنترنت"));
   $("newName").value = "";
-  saveDraft(); render(); toast("تمت إضافة الفارس: " + name);
 }
 
 /* ═══ دخول المعلم ═══ */
-let pinMode = "login"; // login | change
+let pinMode = "login";
 $("btnTeacher").onclick = ()=>{
   if (teacher){
     const mp = $("managePanel");
@@ -398,7 +421,7 @@ $("btnExit").onclick = ()=>{
 $("btnPin").onclick = ()=>{
   pinMode = "change";
   $("pinTitle").textContent = "تغيير رمز المعلم";
-  $("pinDesc").textContent = "أدخل الرمز الجديد (4 أرقام أو أكثر) — سيُحفظ في النسخة المصدَّرة";
+  $("pinDesc").textContent = "أدخل الرمز الجديد (4 أرقام أو أكثر) — يُحفظ للجميع فوراً";
   $("pinOk").textContent = "حفظ الرمز";
   openPin();
 };
@@ -415,44 +438,25 @@ $("pinOk").onclick = ()=>{
   const v = $("pinInput").value;
   if (pinMode === "change"){
     if (v.length < 4){ $("pinErr").textContent = "الرمز يجب أن يكون 4 أرقام على الأقل"; return; }
-    DATA.config.pin = v; saveDraft(); closePin(); toast("تم تغيير الرمز — نزّل نسخة للنشر ليصبح دائماً");
+    db.ref(`${ROOT}/pin`).set(v)
+      .then(()=>{ PIN = v; closePin(); toast("تم تغيير الرمز وحفظه ✓"); })
+      .catch(()=> $("pinErr").textContent = "تعذر الحفظ — تحقق من الإنترنت");
     return;
   }
-  if (v === DATA.config.pin){
+  if (v === PIN){
     teacher = true; closePin();
     $("managePanel").style.display = "block";
     $("btnTeacher").textContent = "👁️ عرض اللوحة";
     $("btnTeacher").classList.add("on");
-    $("btnExit").style.display = "block";
-    /* استرجاع مسودة غير منشورة إن وجدت */
-    if (window.__draft && confirm("توجد مسودة تعديلات محفوظة على هذا الجهاز لم تُنشر بعد. استرجاعها؟")){
-      DATA = window.__draft;
-    }
-    window.__draft = null;
+    $("btnExit").style.display = "inline-block";
     render();
   } else {
     $("pinErr").textContent = "الرمز غير صحيح";
   }
 };
 
-/* ═══ التصدير: تنزيل نسخة HTML محدثة للنشر ═══ */
-$("btnExport").onclick = ()=>{
-  const json = JSON.stringify(DATA).replace(/</g, "\\u003c");
-  const out = PAGE_SOURCE.replace(
-    /(<script type="application\/json" id="app-data">)[\s\S]*?(<\/script>)/,
-    (_, a, b) => a + "\n" + json + "\n" + b
-  );
-  const blob = new Blob([out], {type: "text/html;charset=utf-8"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "index.html";
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=> URL.revokeObjectURL(a.href), 3000);
-  toast("تم التنزيل — ارفع index.html على GitHub");
-};
-
-/* ═══ بحث ═══ */
 $("search").addEventListener("input", render);
-
 render();
-</script></body></html>
+</script>
+</body>
+</html>
