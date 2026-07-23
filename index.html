@@ -293,7 +293,7 @@ function badgesHTML(st){
   const s = st.stats || {};
   const parts = Object.keys(REASONS)
     .filter(k => s[k] > 0)
-    .map(k => `<span title="${REASONS[k].label}">${REASONS[k].icon} ${s[k]}</span>`);
+    .map(k => `<span>${REASONS[k].icon} ${REASONS[k].label} ×${s[k]} <b style="color:#0E7C6B">(+${s[k]*REASONS[k].pts})</b></span>`);
   return parts.length ? `<div class="badges">${parts.join("")}</div>` : "";
 }
 
